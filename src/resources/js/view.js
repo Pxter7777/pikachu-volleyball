@@ -369,7 +369,7 @@ export class GameView {
 
     this.cloudContainer = makeCloudContainer(textures);
     this.waveContainer = makeWaveContainer(textures);
-
+    this.hitbox = makeHitbox();
     // container which include whold display objects
     // Should be careful on addChild order
     // The later added, the more front(z-index) on screen
@@ -391,7 +391,7 @@ export class GameView {
     this.container.addChild(this.messages.gameStart);
     this.container.addChild(this.messages.ready);
     this.container.addChild(this.messages.gameEnd);
-
+    this.container.addChild(this.hitbox);
     // location and visibility setting
     this.bgContainer.x = 0;
     this.bgContainer.y = 0;
@@ -953,4 +953,16 @@ function getFrameNumberForPlayerAnimatedSprite(state, frameNumber) {
   } else if (state > 4) {
     return 18 + 5 * (state - 5) + frameNumber;
   }
+}
+function makeHitbox() {// try to draw a basic line
+  let myGraph = new Graphics();
+  // Move it to the beginning of the line
+  myGraph.position.set(100, 100);
+
+  // Draw the line (endPoint should be relative to myGraph's position)
+  myGraph.lineStyle(50, 0xffffff)
+    .moveTo(0, 0)
+    .lineTo(200, 0);
+  console.log("ISTHATOK?");
+  return myGraph;
 }
