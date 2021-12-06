@@ -954,15 +954,17 @@ function getFrameNumberForPlayerAnimatedSprite(state, frameNumber) {
     return 18 + 5 * (state - 5) + frameNumber;
   }
 }
-function makeHitbox() {// try to draw a basic line
+function makeHitbox() {// try to draw a basic box
   let myGraph = new Graphics();
   // Move it to the beginning of the line
   myGraph.position.set(100, 100);
 
   // Draw the line (endPoint should be relative to myGraph's position)
-  myGraph.lineStyle(50, 0xffffff)
-    .moveTo(0, 0)
-    .lineTo(200, 0);
+  myGraph.lineStyle(1, 0x40ff00)
+    .lineTo(64, 0)
+    .lineTo(64, 64)
+    .lineTo(0, 64)
+    .lineTo(0, 0);
   console.log("ISTHATOK?");
   return myGraph;
 }
