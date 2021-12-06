@@ -371,6 +371,7 @@ export class GameView {
     this.waveContainer = makeWaveContainer(textures);
     this.hitbox1 = makeHitbox();
     this.hitbox2 = makeHitbox();
+    this.polehitbox = makePoleTopHitbox();
     // container which include whold display objects
     // Should be careful on addChild order
     // The later added, the more front(z-index) on screen
@@ -394,6 +395,7 @@ export class GameView {
     this.container.addChild(this.messages.gameEnd);
     this.container.addChild(this.hitbox1);
     this.container.addChild(this.hitbox2);
+    this.container.addChild(this.polehitbox);
     // location and visibility setting
     this.bgContainer.x = 0;
     this.bgContainer.y = 0;
@@ -413,6 +415,8 @@ export class GameView {
     this.shadows.forPlayer2.y = 273;
     this.shadows.forBall.y = 273;
 
+    this.polehitbox.x = 191;
+    this.polehitbox.y = 176;
     this.initializeVisibles();
 
     // clouds and wave model.
@@ -971,6 +975,14 @@ function makeHitbox() {// try to draw a basic box
     .lineTo(64, 64)
     .lineTo(0, 64)
     .lineTo(0, 0);
-  console.log("ISTHATOK?");
+  return myGraph;
+}
+function makePoleTopHitbox() {
+  let myGraph = new Graphics();
+  myGraph.lineStyle(1, 0xff00ff)
+    .lineTo(50, 0)
+    .lineTo(50, 16)
+    .lineTo(0, 16)
+    .lineTo(0, 0);
   return myGraph;
 }
