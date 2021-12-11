@@ -1080,12 +1080,12 @@ const fullSkillTypeForPlayer1 = {
   netDodge: 8,
 };
 const fullSkillTypeForPlayer2 = {
-  netThunder: 0,
-  fakeNetThunderFlat: 1,
-  breakNet: 2,
-  tossAndFlat: 3,
-  headThunder: 4,
-  fakeHeadThunderFlat: 5,
+  breakNet: 0,
+  tossAndFlat: 1,
+  headThunder: 2,
+  fakeHeadThunderFlat: 3,
+  netThunder: 4,
+  fakeNetThunderFlat: 5,
 };
 //var SkillTypeForPlayer2Available = [true, true, false, false, false, true];
 function ChooseSkillTypeForPlayer1() {
