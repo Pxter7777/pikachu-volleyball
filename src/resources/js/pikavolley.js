@@ -65,7 +65,7 @@ export class PikachuVolleyball {
     /** @type {number[]} [0] for player 1 score, [1] for player 2 score */
     this.scores = [0, 0];
     /** @type {number} winning score: if either one of the players reaches this score, game ends */
-    this.winningScore = 15;
+    this.winningScore = 30;
     //this.winningScore = 50;//modify to 50
 
     /** @type {boolean} Is the game ended? */
