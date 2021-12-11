@@ -9,6 +9,7 @@ import { LineStyle } from 'pixi.js-legacy';
 /** @typedef {import('pixi.js-legacy').Ticker} Ticker */
 export var serveMode = 1;
 export var SkillTypeForPlayer2Available = [true, true, true, true, true, true];
+export var SkillTypeForPlayer1Available = [true, true, true, true, true, true, true, true, true];
 /**
  * Enum for "game paused by what?".
  * The greater the number, the higher the precedence.

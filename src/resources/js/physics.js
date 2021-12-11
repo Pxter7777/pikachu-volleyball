@@ -28,7 +28,7 @@
  */
 'use strict';
 import { rand } from './rand.js';
-import { serveMode, SkillTypeForPlayer2Available } from './ui.js';
+import { serveMode, SkillTypeForPlayer2Available, SkillTypeForPlayer1Available } from './ui.js';
 
 /** @constant @type {number} ground width */
 const GROUND_WIDTH = 432;
@@ -821,7 +821,7 @@ function letComputerDecideUserInput(player, ball, theOtherPlayer, userInput) {
   userInput.powerHit = 0;
   if (player.isPlayer2 === false)
     return Player1Serve(player, ball, theOtherPlayer, userInput);
-  else if ((player.isPlayer2 === true))
+  else if (player.isPlayer2 === true)
     return Player2Serve(player, ball, theOtherPlayer, userInput);
   let virtualExpectedLandingPointX = ball.expectedLandingPointX;
   if (
@@ -1081,15 +1081,15 @@ const fullSkillTypeForPlayer2 = {
 function ChooseSkillTypeForPlayer1() {
   if (serveMode == 0) {
     while (1) {
-      var select = rand() % 6;
-      if (SkillTypeForPlayer2Available[select])
+      var select = rand() % 1;
+      if (SkillTypeForPlayer1Available[select])
         return select;
     }
   }
   else if (serveMode == 1) {
     while (1) {
-      if (SkillTypeForPlayer2Available[serveCount % 6])
-        return serveCount % 6;
+      if (SkillTypeForPlayer1Available[serveCount % 1])
+        return serveCount % 1;
       else
         serveCount++;
     }
@@ -1122,10 +1122,53 @@ function Player1Serve(
   function switchSkill() {
     if (player.serveFixedOrder === true) {
       if (player.fullSkillMethod === fullSkillTypeForPlayer1.breakNet) {
-        ;
+        if (player.skillPhase === 0)
+          player.usingSkill = SkillType.halfStep;
+        else if (player.skillPhase === 1)
+          player.usingSkill = SkillType.walkUntilNet;
+        else if (player.skillPhase === 2)
+          player.usingSkill = SkillType.breakNet;
       }
     }
     else;//pass
+    player.skillPhase++;
+    player.skillSubPhase = 0;
+  }
+  if (player.skillPhase === 0) {
+    switchSkill();
+    serveCount++;
+  }
+  else if (player.skillPhase === 1) {
+    if (player.usingSkill === SkillType.halfStep) {
+      if (player.skillSubPhase === 0) {
+        userInput.xDirection = 1;
+        player.skillSubPhase++;
+      }
+      else if (player.skillSubPhase === 1) {
+        if (player.isCollisionWithBallHappened)
+          switchSkill();
+      }
+    }
+  }
+  else if (player.skillPhase === 2) {
+    if (player.usingSkill === SkillType.walkUntilNet) {
+      userInput.xDirection = 1;
+      if (ball.y > 50 && ball.x > 116)
+        switchSkill();
+    }
+  }
+  else if (player.skillPhase === 3) {
+    if (player.usingSkill === SkillType.breakNet) {
+      if (player.skillSubPhase === 0) {
+        userInput.yDirection = -1;
+        player.skillSubPhase++;
+      }
+      else if (player.skillSubPhase === 1) {
+        userInput.xDirection = 1;
+        userInput.yDirection = 1;
+        userInput.powerHit = 1;
+      }
+    }
   }
 }
 function Player2Serve(
@@ -1289,7 +1332,6 @@ function Player2Serve(
         userInput.yDirection = 1;
         userInput.powerHit = 1;
       }
-
     }
   }
   else if (player.skillPhase === 4) {
