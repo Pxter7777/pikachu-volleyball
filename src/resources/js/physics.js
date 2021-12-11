@@ -217,10 +217,10 @@ class Player {
     this.skillPhase = 0;
     this.skillSubPhase = 0;
     if (serveMode == 0)
-      this.fullSkillMethod = rand() % 4;
+      this.fullSkillMethod = rand() % 6;
     else
-      this.fullSkillMethod = serveCount % 4;
-
+      this.fullSkillMethod = serveCount % 6;
+    //this.fullSkillMethod = fullSkillType.tossAndFlat;
     this.usingSkill = SkillType.none;
     this.serveFixedOrder = true;
   }
@@ -1064,13 +1064,17 @@ const SkillType = {
   netThunder: 4, //彈網閃電
   fakeNetThunderFlat: 5,
   headThunderJump: 6,
-  tossAndFlat: 7
+  tossAndFlat: 7,
+  fakeHeadThunderFlat: 8,
+  breakNet: 9,
 };
 const fullSkillType = {
   netThunder: 0,
   fakeNetThunderFlat: 1,
   tossAndFlat: 2,
-  headThunder: 3
+  headThunder: 3,
+  fakeHeadThunderFlat: 4,
+  breakNet: 5,
 }
 var serveCount = 0;
 
@@ -1118,7 +1122,24 @@ function Player2Serve(
         else if (player.skillPhase === 2)
           player.usingSkill = SkillType.headThunder;
       }
-    } else {
+      else if (player.fullSkillMethod === fullSkillType.fakeHeadThunderFlat) {
+        if (player.skillPhase === 0)
+          player.usingSkill = SkillType.halfStep;
+        else if (player.skillPhase === 1)
+          player.usingSkill = SkillType.headThunderJump;
+        else if (player.skillPhase === 2)
+          player.usingSkill = SkillType.fakeHeadThunderFlat;
+      }
+      else if (player.fullSkillMethod === fullSkillType.breakNet) {
+        if (player.skillPhase === 0)
+          player.usingSkill = SkillType.halfStep;
+        else if (player.skillPhase === 1)
+          player.usingSkill = SkillType.walkUntilNet;
+        else if (player.skillPhase === 2)
+          player.usingSkill = SkillType.breakNet;
+      }
+    }
+    else {
       ;//pass
     }
     player.skillPhase++;
@@ -1146,7 +1167,7 @@ function Player2Serve(
   else if (player.skillPhase === 2) {
     if (player.usingSkill === SkillType.walkUntilNet) {
       userInput.xDirection = -1;
-      if (ball.y > 100 && ball.x < 300)
+      if (ball.y > 50 && ball.x < 300)
         switchSkill();
     }
     else if (player.usingSkill === SkillType.headThunderJump) {
@@ -1179,10 +1200,14 @@ function Player2Serve(
     }
     else if (player.usingSkill === SkillType.tossAndFlat) {
       if (player.skillSubPhase === 0) {
+        if (ball.y > 100)
+          player.skillSubPhase++;
+      }
+      if (player.skillSubPhase === 1) {
         userInput.yDirection = -1;
         player.skillSubPhase++;
       }
-      else if (player.skillSubPhase === 1) {
+      else if (player.skillSubPhase === 2) {
         userInput.xDirection = -1;
         userInput.powerHit = 1;
       }
@@ -1199,6 +1224,22 @@ function Player2Serve(
         userInput.yDirection = 1;
         userInput.powerHit = 1;
       }
+    }
+    else if (player.usingSkill === SkillType.fakeHeadThunderFlat) {
+      userInput.xDirection = -1;
+      userInput.powerHit = 1;
+    }
+    else if (player.usingSkill === SkillType.breakNet) {
+      if (player.skillSubPhase === 0) {
+        userInput.yDirection = -1;
+        player.skillSubPhase++;
+      }
+      else if (player.skillSubPhase === 1) {
+        userInput.xDirection = -1;
+        userInput.yDirection = 1;
+        userInput.powerHit = 1;
+      }
+
     }
   }
   else if (player.skillPhase === 4) {
