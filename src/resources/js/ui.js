@@ -7,7 +7,7 @@ import { LineStyle } from 'pixi.js-legacy';
 
 /** @typedef {import('./pikavolley.js').PikachuVolleyball} PikachuVolleyball */
 /** @typedef {import('pixi.js-legacy').Ticker} Ticker */
-export var serveMode = 1;
+export var serveMode = 0;
 export var SkillTypeForPlayer1Available = [true, true, true, true, true, true, true, true, true];
 export var SkillTypeForPlayer2Available = [true, true, true, true, true, true];
 /**
@@ -416,7 +416,6 @@ function setUpBtns(pikaVolley, ticker) {
   const serveAvailablePlayer25Btn = document.getElementById('serve-available-player2-5-btn');
 
   serveAvailablePlayer10Btn.addEventListener('click', () => {
-    console.log(CountAvailable(SkillTypeForPlayer1Available));
     if (SkillTypeForPlayer1Available[0] === true && CountAvailable(SkillTypeForPlayer1Available) >= 2) {
       SkillTypeForPlayer1Available[0] = false;
       serveAvailablePlayer10Btn.classList.remove('selected');
@@ -427,7 +426,6 @@ function setUpBtns(pikaVolley, ticker) {
     }
   });
   serveAvailablePlayer11Btn.addEventListener('click', () => {
-    console.log(CountAvailable(SkillTypeForPlayer1Available));
     if (SkillTypeForPlayer1Available[1] === true && CountAvailable(SkillTypeForPlayer1Available) >= 2) {
       SkillTypeForPlayer1Available[1] = false;
       serveAvailablePlayer11Btn.classList.remove('selected');
@@ -438,7 +436,6 @@ function setUpBtns(pikaVolley, ticker) {
     }
   });
   serveAvailablePlayer12Btn.addEventListener('click', () => {
-    console.log(CountAvailable(SkillTypeForPlayer1Available));
     if (SkillTypeForPlayer1Available[2] === true && CountAvailable(SkillTypeForPlayer1Available) >= 2) {
       SkillTypeForPlayer1Available[2] = false;
       serveAvailablePlayer12Btn.classList.remove('selected');
@@ -449,7 +446,6 @@ function setUpBtns(pikaVolley, ticker) {
     }
   });
   serveAvailablePlayer13Btn.addEventListener('click', () => {
-    console.log(CountAvailable(SkillTypeForPlayer1Available));
     if (SkillTypeForPlayer1Available[3] === true && CountAvailable(SkillTypeForPlayer1Available) >= 2) {
       SkillTypeForPlayer1Available[3] = false;
       serveAvailablePlayer13Btn.classList.remove('selected');
@@ -460,7 +456,6 @@ function setUpBtns(pikaVolley, ticker) {
     }
   });
   serveAvailablePlayer14Btn.addEventListener('click', () => {
-    console.log(CountAvailable(SkillTypeForPlayer1Available));
     if (SkillTypeForPlayer1Available[4] === true && CountAvailable(SkillTypeForPlayer1Available) >= 2) {
       SkillTypeForPlayer1Available[4] = false;
       serveAvailablePlayer14Btn.classList.remove('selected');
@@ -471,7 +466,6 @@ function setUpBtns(pikaVolley, ticker) {
     }
   });
   serveAvailablePlayer15Btn.addEventListener('click', () => {
-    console.log(CountAvailable(SkillTypeForPlayer1Available));
     if (SkillTypeForPlayer1Available[5] === true && CountAvailable(SkillTypeForPlayer1Available) >= 2) {
       SkillTypeForPlayer1Available[5] = false;
       serveAvailablePlayer15Btn.classList.remove('selected');
@@ -482,7 +476,6 @@ function setUpBtns(pikaVolley, ticker) {
     }
   });
   serveAvailablePlayer16Btn.addEventListener('click', () => {
-    console.log(CountAvailable(SkillTypeForPlayer1Available));
     if (SkillTypeForPlayer1Available[6] === true && CountAvailable(SkillTypeForPlayer1Available) >= 2) {
       SkillTypeForPlayer1Available[6] = false;
       serveAvailablePlayer16Btn.classList.remove('selected');
@@ -493,7 +486,6 @@ function setUpBtns(pikaVolley, ticker) {
     }
   });
   serveAvailablePlayer17Btn.addEventListener('click', () => {
-    console.log(CountAvailable(SkillTypeForPlayer1Available));
     if (SkillTypeForPlayer1Available[7] === true && CountAvailable(SkillTypeForPlayer1Available) >= 2) {
       SkillTypeForPlayer1Available[7] = false;
       serveAvailablePlayer17Btn.classList.remove('selected');
@@ -504,7 +496,6 @@ function setUpBtns(pikaVolley, ticker) {
     }
   });
   serveAvailablePlayer18Btn.addEventListener('click', () => {
-    console.log(CountAvailable(SkillTypeForPlayer1Available));
     if (SkillTypeForPlayer1Available[8] === true && CountAvailable(SkillTypeForPlayer1Available) >= 2) {
       SkillTypeForPlayer1Available[8] = false;
       serveAvailablePlayer18Btn.classList.remove('selected');
@@ -515,7 +506,6 @@ function setUpBtns(pikaVolley, ticker) {
     }
   });
   serveAvailablePlayer20Btn.addEventListener('click', () => {
-    console.log(CountAvailable(SkillTypeForPlayer2Available));
     if (SkillTypeForPlayer2Available[0] === true && CountAvailable(SkillTypeForPlayer2Available) >= 2) {
       SkillTypeForPlayer2Available[0] = false;
       serveAvailablePlayer20Btn.classList.remove('selected');
@@ -526,7 +516,6 @@ function setUpBtns(pikaVolley, ticker) {
     }
   });
   serveAvailablePlayer21Btn.addEventListener('click', () => {
-    console.log(CountAvailable(SkillTypeForPlayer2Available));
     if (SkillTypeForPlayer2Available[1] === true && CountAvailable(SkillTypeForPlayer2Available) >= 2) {
       SkillTypeForPlayer2Available[1] = false;
       serveAvailablePlayer21Btn.classList.remove('selected');
@@ -537,7 +526,6 @@ function setUpBtns(pikaVolley, ticker) {
     }
   });
   serveAvailablePlayer22Btn.addEventListener('click', () => {
-    console.log(CountAvailable(SkillTypeForPlayer2Available));
     if (SkillTypeForPlayer2Available[2] === true && CountAvailable(SkillTypeForPlayer2Available) >= 2) {
       SkillTypeForPlayer2Available[2] = false;
       serveAvailablePlayer22Btn.classList.remove('selected');
@@ -548,7 +536,6 @@ function setUpBtns(pikaVolley, ticker) {
     }
   });
   serveAvailablePlayer23Btn.addEventListener('click', () => {
-    console.log(CountAvailable(SkillTypeForPlayer2Available));
     if (SkillTypeForPlayer2Available[3] === true && CountAvailable(SkillTypeForPlayer2Available) >= 2) {
       SkillTypeForPlayer2Available[3] = false;
       serveAvailablePlayer23Btn.classList.remove('selected');
@@ -559,7 +546,6 @@ function setUpBtns(pikaVolley, ticker) {
     }
   });
   serveAvailablePlayer24Btn.addEventListener('click', () => {
-    console.log(CountAvailable(SkillTypeForPlayer2Available));
     if (SkillTypeForPlayer2Available[4] === true && CountAvailable(SkillTypeForPlayer2Available) >= 2) {
       SkillTypeForPlayer2Available[4] = false;
       serveAvailablePlayer24Btn.classList.remove('selected');
@@ -570,7 +556,6 @@ function setUpBtns(pikaVolley, ticker) {
     }
   });
   serveAvailablePlayer25Btn.addEventListener('click', () => {
-    console.log(CountAvailable(SkillTypeForPlayer2Available));
     if (SkillTypeForPlayer2Available[5] === true && CountAvailable(SkillTypeForPlayer2Available) >= 2) {
       SkillTypeForPlayer2Available[5] = false;
       serveAvailablePlayer25Btn.classList.remove('selected');

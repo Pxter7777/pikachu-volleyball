@@ -48,7 +48,7 @@ export class PikachuVolleyball {
     ];
 
     /** @type {number} game fps */
-    this.normalFPS = 25;
+    this.normalFPS = 30;
     /** @type {number} fps for slow motion */
     this.slowMotionFPS = 5;
 

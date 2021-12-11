@@ -216,13 +216,13 @@ class Player {
     /*thunder ball phase*/
     this.skillPhase = 0;
     this.skillSubPhase = 0;
-    if (this.isPlayer2 === false)
-      this.fullSkillMethod = ChooseSkillTypeForPlayer1();
-    else if (this.isPlayer2 === true)
-      this.fullSkillMethod = ChooseSkillTypeForPlayer2();
-    lastSkill = this.fullSkillMethod;
-
-
+    if (this.isComputer === true) {
+      if (this.isPlayer2 === false)
+        this.fullSkillMethod = ChooseSkillTypeForPlayer1();
+      else if (this.isPlayer2 === true)
+        this.fullSkillMethod = ChooseSkillTypeForPlayer2();
+      lastSkill = this.fullSkillMethod;
+    }
     //this.fullSkillMethod = fullSkillTypeForPlayer2.tossAndFlat;
     this.usingSkill = SkillType.none;
     this.serveFixedOrder = true;
@@ -1094,6 +1094,7 @@ function CountAvailable(avail) {
   return avail.filter(x => x === true).length;
 }
 function ChooseSkillTypeForPlayer1() {
+  //console.log("avail=", CountAvailable(SkillTypeForPlayer1Available));
   if (serveMode == 0) {
     while (1) {
       var select = rand() % 9;
@@ -1112,6 +1113,7 @@ function ChooseSkillTypeForPlayer1() {
   }
 }
 function ChooseSkillTypeForPlayer2() {
+  //console.log("avail=", CountAvailable(SkillTypeForPlayer2Available));
   if (serveMode === 0) {
     while (1) {
       var select = rand() % 6;
