@@ -66,6 +66,7 @@ export class PikachuVolleyball {
     this.scores = [0, 0];
     /** @type {number} winning score: if either one of the players reaches this score, game ends */
     this.winningScore = 15;
+    this.winningScore = 50;//modify to 50
 
     /** @type {boolean} Is the game ended? */
     this.gameEnded = false;
@@ -73,7 +74,6 @@ export class PikachuVolleyball {
     this.roundEnded = false;
     /** @type {boolean} Will player 2 serve? */
     this.isPlayer2Serve = false;
-
     /** @type {number} frame counter */
     this.frameCounter = 0;
     /** @type {Object.<string,number>} total number of frames for each game state */
@@ -122,7 +122,7 @@ export class PikachuVolleyball {
       this.slowMotionNumOfSkippedFrames++;
       if (
         this.slowMotionNumOfSkippedFrames %
-          Math.round(this.normalFPS / this.slowMotionFPS) !==
+        Math.round(this.normalFPS / this.slowMotionFPS) !==
         0
       ) {
         return;
@@ -298,6 +298,11 @@ export class PikachuVolleyball {
 
       this.physics.player1.initializeForNewRound();
       this.physics.player2.initializeForNewRound();
+      // always let computer serve
+      if (this.physics.player1.isComputer === true)
+        this.isPlayer2Serve = false;
+      else if (this.physics.player2.isComputer === true)
+        this.isPlayer2Serve = true;
       this.physics.ball.initializeForNewRound(this.isPlayer2Serve);
       this.view.game.drawPlayersAndBall(this.physics);
 
@@ -369,7 +374,6 @@ export class PikachuVolleyball {
       this.gameEnded === false
     ) {
       if (this.physics.ball.punchEffectX < GROUND_HALF_WIDTH) {
-        this.isPlayer2Serve = true;
         this.scores[1] += 1;
         if (this.scores[1] >= this.winningScore) {
           this.gameEnded = true;
@@ -379,7 +383,6 @@ export class PikachuVolleyball {
           this.physics.player2.gameEnded = true;
         }
       } else {
-        this.isPlayer2Serve = false;
         this.scores[0] += 1;
         if (this.scores[0] >= this.winningScore) {
           this.gameEnded = true;
