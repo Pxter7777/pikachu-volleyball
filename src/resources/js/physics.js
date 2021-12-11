@@ -1081,15 +1081,15 @@ const fullSkillTypeForPlayer2 = {
 function ChooseSkillTypeForPlayer1() {
   if (serveMode == 0) {
     while (1) {
-      var select = rand() % 1;
+      var select = rand() % 2;
       if (SkillTypeForPlayer1Available[select])
         return select;
     }
   }
   else if (serveMode == 1) {
     while (1) {
-      if (SkillTypeForPlayer1Available[serveCount % 1])
-        return serveCount % 1;
+      if (SkillTypeForPlayer1Available[serveCount % 2])
+        return serveCount % 2;
       else
         serveCount++;
     }
@@ -1129,6 +1129,14 @@ function Player1Serve(
         else if (player.skillPhase === 2)
           player.usingSkill = SkillType.breakNet;
       }
+      else if (player.fullSkillMethod === fullSkillTypeForPlayer1.tossAndFlat) {
+        if (player.skillPhase === 0)
+          player.usingSkill = SkillType.halfStep;
+        else if (player.skillPhase === 1)
+          player.usingSkill = SkillType.walkUntilNet;
+        else if (player.skillPhase === 2)
+          player.usingSkill = SkillType.tossAndFlat;
+      }
     }
     else;//pass
     player.skillPhase++;
@@ -1166,6 +1174,20 @@ function Player1Serve(
       else if (player.skillSubPhase === 1) {
         userInput.xDirection = 1;
         userInput.yDirection = 1;
+        userInput.powerHit = 1;
+      }
+    }
+    else if (player.usingSkill === SkillType.tossAndFlat) {
+      if (player.skillSubPhase === 0) {
+        if (ball.y > 100)
+          player.skillSubPhase++;
+      }
+      if (player.skillSubPhase === 1) {
+        userInput.yDirection = -1;
+        player.skillSubPhase++;
+      }
+      else if (player.skillSubPhase === 2) {
+        userInput.xDirection = 1;
         userInput.powerHit = 1;
       }
     }
