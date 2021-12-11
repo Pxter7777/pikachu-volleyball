@@ -1116,7 +1116,7 @@ function ChooseSkillTypeForPlayer2() {
     while (1) {
       var select = rand() % 6;
       if (SkillTypeForPlayer2Available[select])
-        if (CountAvailable(SkillTypeForPlayer1Available) <= 2 || select != lastSkill)
+        if (CountAvailable(SkillTypeForPlayer2Available) <= 2 || select != lastSkill)
           return select;
     }
   }
