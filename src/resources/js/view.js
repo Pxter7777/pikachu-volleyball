@@ -369,10 +369,7 @@ export class GameView {
 
     this.cloudContainer = makeCloudContainer(textures);
     this.waveContainer = makeWaveContainer(textures);
-    this.hitbox1 = makeHitbox();
-    this.hitbox2 = makeHitbox();
-    this.polehitbox = makePoleTopHitbox();
-    this.balllandingpoint = makeBallLandingPoint();
+
     // container which include whold display objects
     // Should be careful on addChild order
     // The later added, the more front(z-index) on screen
@@ -394,10 +391,7 @@ export class GameView {
     this.container.addChild(this.messages.gameStart);
     this.container.addChild(this.messages.ready);
     this.container.addChild(this.messages.gameEnd);
-    this.container.addChild(this.hitbox1);
-    this.container.addChild(this.hitbox2);
-    this.container.addChild(this.polehitbox);
-    this.container.addChild(this.balllandingpoint);
+
     // location and visibility setting
     this.bgContainer.x = 0;
     this.bgContainer.y = 0;
@@ -417,8 +411,6 @@ export class GameView {
     this.shadows.forPlayer2.y = 273;
     this.shadows.forBall.y = 273;
 
-    this.polehitbox.x = 216;
-    this.polehitbox.y = 176;
     this.initializeVisibles();
 
     // clouds and wave model.
@@ -462,12 +454,8 @@ export class GameView {
     const player2 = physics.player2;
     const ball = physics.ball;
 
-    this.balllandingpoint.x = ball.expectedLandingPointX;
-    this.balllandingpoint.y = 252;
     this.player1.x = player1.x;
     this.player1.y = player1.y;
-    this.hitbox1.x = player1.x;
-    this.hitbox1.y = player1.y;
     if (player1.state === 3 || player1.state === 4) {
       this.player1.scale.x = player1.divingDirection === -1 ? -1 : 1;
     } else {
@@ -477,8 +465,6 @@ export class GameView {
 
     this.player2.x = player2.x;
     this.player2.y = player2.y;
-    this.hitbox2.x = player2.x;
-    this.hitbox2.y = player2.y;
     if (player2.state === 3 || player2.state === 4) {
       this.player2.scale.x = player2.divingDirection === 1 ? 1 : -1;
     } else {
@@ -967,28 +953,4 @@ function getFrameNumberForPlayerAnimatedSprite(state, frameNumber) {
   } else if (state > 4) {
     return 18 + 5 * (state - 5) + frameNumber;
   }
-}
-function makeHitbox() {// try to draw a basic box
-  let myGraph = new Graphics();
-  // Move it to the beginning of the line
-  // myGraph.position.set(100, 100);
-
-  // Draw the line (endPoint should be relative to myGraph's position)
-  myGraph.lineStyle(1, 0x40ff00)
-    .drawRect(-32, -32, 64, 64);
-  return myGraph;
-}
-function makePoleTopHitbox() {
-  let myGraph = new Graphics();
-  myGraph.lineStyle(1, 0xff00ff)
-    .drawRect(-25, 0, 50, 16);
-  return myGraph;
-}
-function makeBallLandingPoint() {
-  let myGraph = new Graphics();
-  myGraph.lineStyle(1, 0x000000)
-    .beginFill(0xff0000)
-    .drawRect(-20, 0, 40, 10)
-    .endFill();
-  return myGraph;
 }
