@@ -215,7 +215,7 @@ class Player {
     /*thunder ball phase*/
     this.skillPhase = 0;
     this.skillSubPhase = 0;
-    this.fullSkillMethod = serveCount % 3;
+    this.fullSkillMethod = serveCount % 4;
 
     this.usingSkill = SkillType.none;
     this.serveFixedOrder = true;
@@ -1058,12 +1058,15 @@ const SkillType = {
   walkUntilNet: 2, //走到網前
   hitNet: 3,
   netThunder: 4, //彈網閃電
-  fakeNetThunderFlat: 5
+  fakeNetThunderFlat: 5,
+  headThunderJump: 6,
+  tossAndFlat: 7
 };
 const fullSkillType = {
   netThunder: 0,
   fakeNetThunderFlat: 1,
-  tossAndFlat: 2
+  tossAndFlat: 2,
+  headThunder: 3
 }
 var serveCount = 0;
 
@@ -1103,11 +1106,20 @@ function Player2Serve(
         else if (player.skillPhase === 2)
           player.usingSkill = SkillType.tossAndFlat;
       }
+      else if (player.fullSkillMethod === fullSkillType.headThunder) {
+        if (player.skillPhase === 0)
+          player.usingSkill = SkillType.halfStep;
+        else if (player.skillPhase === 1)
+          player.usingSkill = SkillType.headThunderJump;
+        else if (player.skillPhase === 2)
+          player.usingSkill = SkillType.headThunder;
+      }
     } else {
       ;//pass
     }
     player.skillPhase++;
     player.skillSubPhase = 0;
+    console.log(player.usingSkill);
   };
   if (player.skillPhase === 0) {
     switchSkill();
@@ -1132,7 +1144,19 @@ function Player2Serve(
       if (ball.y > 100 && ball.x < 300)
         switchSkill();
     }
-    else;//pass
+    else if (player.usingSkill === SkillType.headThunderJump) {
+      if (player.skillSubPhase === 0) {
+        userInput.xDirection = -1;
+        if (player.x < 350)
+          player.skillSubPhase++;
+      }
+      else if (player.skillSubPhase === 1) {
+        userInput.xDirection = -1;
+        userInput.yDirection = -1;
+        if (player.x < 275)
+          switchSkill();
+      }
+    }
   }
   else if (player.skillPhase === 3) {
     if (player.usingSkill === SkillType.hitNet) {
@@ -1155,6 +1179,19 @@ function Player2Serve(
       }
       else if (player.skillSubPhase === 1) {
         userInput.xDirection = -1;
+        userInput.powerHit = 1;
+      }
+    }
+    else if (player.usingSkill === SkillType.headThunder) {
+      if (player.skillSubPhase === 0) {
+        userInput.yDirection = 1;
+        userInput.powerHit = 1;
+        if (player.isCollisionWithBallHappened)
+          player.skillSubPhase++;
+      }
+      else if (player.skillSubPhase === 1) {
+        userInput.xDirection = -1;
+        userInput.yDirection = 1;
         userInput.powerHit = 1;
       }
     }
