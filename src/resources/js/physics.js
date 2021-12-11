@@ -28,6 +28,7 @@
  */
 'use strict';
 import { rand } from './rand.js';
+import { serveMode } from './ui.js';
 
 /** @constant @type {number} ground width */
 const GROUND_WIDTH = 432;
@@ -215,7 +216,10 @@ class Player {
     /*thunder ball phase*/
     this.skillPhase = 0;
     this.skillSubPhase = 0;
-    this.fullSkillMethod = serveCount % 4;
+    if (serveMode == 0)
+      this.fullSkillMethod = rand() % 4;
+    else
+      this.fullSkillMethod = serveCount % 4;
 
     this.usingSkill = SkillType.none;
     this.serveFixedOrder = true;
@@ -1120,6 +1124,7 @@ function Player2Serve(
     player.skillPhase++;
     player.skillSubPhase = 0;
     console.log(player.usingSkill);
+    console.log("servmode=", serveMode);
   };
   if (player.skillPhase === 0) {
     switchSkill();

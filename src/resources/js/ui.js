@@ -4,7 +4,7 @@
 'use strict';
 /** @typedef {import('./pikavolley.js').PikachuVolleyball} PikachuVolleyball */
 /** @typedef {import('pixi.js-legacy').Ticker} Ticker */
-
+export var serveMode = 1;
 /**
  * Enum for "game paused by what?".
  * The greater the number, the higher the precedence.
@@ -341,6 +341,20 @@ function setUpBtns(pikaVolley, ticker) {
     pikaVolley.isPracticeMode = false;
   });
 
+  const serveModeRandomBtn = document.getElementById('serve-mode-random-btn');
+  const serveModeFixedBtn = document.getElementById('serve-mode-fixed-btn');
+  serveModeRandomBtn.addEventListener('click', () => {
+    serveModeFixedBtn.classList.remove('selected');
+    serveModeRandomBtn.classList.add('selected');
+    serveMode = 0;
+  });
+  serveModeFixedBtn.addEventListener('click', () => {
+    serveModeRandomBtn.classList.remove('selected');
+    serveModeFixedBtn.classList.add('selected');
+    serveMode = 1;
+  });
+
+
   const aboutBox = document.getElementById('about-box');
   const closeAboutBtn = document.getElementById('close-about-btn');
   aboutBtn.addEventListener('click', () => {
@@ -423,6 +437,11 @@ function setUpToShowDropdownsAndSubmenus(pikaVolley) {
     .addEventListener('mouseover', () => {
       showSubmenu('practice-mode-submenu-btn', 'practice-mode-submenu');
     });
+  document
+    .getElementById('serve-mode-submenu-btn')
+    .addEventListener('mouseover', () => {
+      showSubmenu('serve-mode-submenu-btn', 'serve-mode-submenu');
+    });
 
   // set up to show submenus on click event
   // (it is for touch device equipped with physical keyboard)
@@ -444,6 +463,11 @@ function setUpToShowDropdownsAndSubmenus(pikaVolley) {
     .getElementById('practice-mode-submenu-btn')
     .addEventListener('click', () => {
       showSubmenu('practice-mode-submenu-btn', 'practice-mode-submenu');
+    });
+  document
+    .getElementById('serve-mode-submenu-btn')
+    .addEventListener('click', () => {
+      showSubmenu('serve-mode-submenu-btn', 'serve-mode-submenu');
     });
 }
 
