@@ -1062,12 +1062,22 @@ const SkillType = {
   tossAndFlat: 7,
   fakeHeadThunderFlat: 8,
   breakNet: 9,
+  netVSmash: 10,
+  netRSmash: 11,
+  netGSmash: 12,
+  netRGSmash: 13,
+  netDodge: 14,
 };
 const fullSkillTypeForPlayer1 = {
   breakNet: 0,
   tossAndFlat: 1,
   headThunder: 2,
   fakeHeadThunderFlat: 3,
+  netVSmash: 4,
+  netRSmash: 5,
+  netGSmash: 6,
+  netRGSmash: 7,
+  netDodge: 8,
 };
 const fullSkillTypeForPlayer2 = {
   netThunder: 0,
@@ -1081,15 +1091,15 @@ const fullSkillTypeForPlayer2 = {
 function ChooseSkillTypeForPlayer1() {
   if (serveMode == 0) {
     while (1) {
-      var select = rand() % 2;
+      var select = rand() % 9;
       if (SkillTypeForPlayer1Available[select])
         return select;
     }
   }
   else if (serveMode == 1) {
     while (1) {
-      if (SkillTypeForPlayer1Available[serveCount % 2])
-        return serveCount % 2;
+      if (SkillTypeForPlayer1Available[serveCount % 9])
+        return serveCount % 9;
       else
         serveCount++;
     }
@@ -1137,6 +1147,73 @@ function Player1Serve(
         else if (player.skillPhase === 2)
           player.usingSkill = SkillType.tossAndFlat;
       }
+      else if (player.fullSkillMethod === fullSkillTypeForPlayer1.headThunder) {
+        if (player.skillPhase === 0)
+          player.usingSkill = SkillType.halfStep;
+        else if (player.skillPhase === 1)
+          player.usingSkill = SkillType.headThunderJump;
+        else if (player.skillPhase === 2)
+          player.usingSkill = SkillType.headThunder;
+      }
+      else if (player.fullSkillMethod === fullSkillTypeForPlayer1.netVSmash) {
+        if (player.skillPhase === 0)
+          player.usingSkill = SkillType.halfStep;
+        else if (player.skillPhase === 1)
+          player.usingSkill = SkillType.walkUntilNet;
+        else if (player.skillPhase === 2)
+          player.usingSkill = SkillType.hitNet;
+        else if (player.skillPhase === 3)
+          player.usingSkill = SkillType.netVSmash;
+      }
+      else if (player.fullSkillMethod === fullSkillTypeForPlayer1.fakeHeadThunderFlat) {
+        if (player.skillPhase === 0)
+          player.usingSkill = SkillType.halfStep;
+        else if (player.skillPhase === 1)
+          player.usingSkill = SkillType.headThunderJump;
+        else if (player.skillPhase === 2)
+          player.usingSkill = SkillType.fakeHeadThunderFlat;
+      }
+      else if (player.fullSkillMethod === fullSkillTypeForPlayer1.netRSmash) {
+        if (player.skillPhase === 0)
+          player.usingSkill = SkillType.halfStep;
+        else if (player.skillPhase === 1)
+          player.usingSkill = SkillType.walkUntilNet;
+        else if (player.skillPhase === 2)
+          player.usingSkill = SkillType.hitNet;
+        else if (player.skillPhase === 3)
+          player.usingSkill = SkillType.netRSmash;
+      }
+      else if (player.fullSkillMethod === fullSkillTypeForPlayer1.netGSmash) {
+        if (player.skillPhase === 0)
+          player.usingSkill = SkillType.halfStep;
+        else if (player.skillPhase === 1)
+          player.usingSkill = SkillType.walkUntilNet;
+        else if (player.skillPhase === 2)
+          player.usingSkill = SkillType.hitNet;
+        else if (player.skillPhase === 3)
+          player.usingSkill = SkillType.netGSmash;
+      }
+      else if (player.fullSkillMethod === fullSkillTypeForPlayer1.netRGSmash) {
+        if (player.skillPhase === 0)
+          player.usingSkill = SkillType.halfStep;
+        else if (player.skillPhase === 1)
+          player.usingSkill = SkillType.walkUntilNet;
+        else if (player.skillPhase === 2)
+          player.usingSkill = SkillType.hitNet;
+        else if (player.skillPhase === 3)
+          player.usingSkill = SkillType.netRGSmash;
+      }
+      else if (player.fullSkillMethod === fullSkillTypeForPlayer1.netDodge) {
+        if (player.skillPhase === 0)
+          player.usingSkill = SkillType.halfStep;
+        else if (player.skillPhase === 1)
+          player.usingSkill = SkillType.walkUntilNet;
+        else if (player.skillPhase === 2)
+          player.usingSkill = SkillType.hitNet;
+        else if (player.skillPhase === 3)
+          player.usingSkill = SkillType.netDodge;
+      }
+
     }
     else;//pass
     player.skillPhase++;
@@ -1164,6 +1241,19 @@ function Player1Serve(
       if (ball.y > 50 && ball.x > 116)
         switchSkill();
     }
+    else if (player.usingSkill === SkillType.headThunderJump) {
+      if (player.skillSubPhase === 0) {
+        userInput.xDirection = 1;
+        if (player.x > 82)
+          player.skillSubPhase++;
+      }
+      else if (player.skillSubPhase === 1) {
+        userInput.xDirection = 1;
+        userInput.yDirection = -1;
+        if (player.x > 157)
+          switchSkill();
+      }
+    }
   }
   else if (player.skillPhase === 3) {
     if (player.usingSkill === SkillType.breakNet) {
@@ -1190,6 +1280,58 @@ function Player1Serve(
         userInput.xDirection = 1;
         userInput.powerHit = 1;
       }
+    }
+    else if (player.usingSkill === SkillType.headThunder) {
+      if (player.skillSubPhase === 0) {
+        userInput.yDirection = 1;
+        userInput.powerHit = 1;
+        if (player.isCollisionWithBallHappened)
+          player.skillSubPhase++;
+      }
+      else if (player.skillSubPhase === 1) {
+        userInput.xDirection = 1;
+        userInput.yDirection = 1;
+        userInput.powerHit = 1;
+      }
+    }
+    else if (player.usingSkill === SkillType.hitNet) {
+      if (player.skillSubPhase === 0) {
+        if (ball.y > 176 && ball.x > 132)
+          player.skillSubPhase++
+      }
+      else if (player.skillSubPhase === 1) {
+        userInput.xDirection = 1;
+        userInput.yDirection = -1;
+        userInput.powerHit = 1;
+        if (ball.x > 132 && ball.xVelocity > 0)
+          switchSkill();
+      }
+    }
+    else if (player.usingSkill === SkillType.fakeHeadThunderFlat) {
+      userInput.xDirection = 1;
+      userInput.powerHit = 1;
+    }
+  }
+  else if (player.skillPhase === 4) {
+    if (player.usingSkill === SkillType.netVSmash) {
+      userInput.yDirection = 1;
+      userInput.powerHit = 1;
+    }
+    else if (player.usingSkill === SkillType.netRSmash) {
+      userInput.yDirection = -1;
+      userInput.powerHit = 1;
+    }
+    else if (player.usingSkill === SkillType.netGSmash) {
+      userInput.xDirection = 1;
+      userInput.powerHit = 1;
+    }
+    else if (player.usingSkill === SkillType.netRGSmash) {
+      userInput.xDirection = 1;
+      userInput.yDirection = -1;
+      userInput.powerHit = 1;
+    }
+    else if (player.usingSkill === SkillType.netDodge) {
+      userInput.xDirection = -1;
     }
   }
 }
