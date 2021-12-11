@@ -213,7 +213,12 @@ class Player {
      */
     this.computerBoldness = rand() % 5; // 0xD8  // initialized to (_rand() % 5)
     /*thunder ball phase*/
-    this.phase = 0;
+    this.skillPhase = 0;
+    this.skillSubPhase = 0;
+    this.fullSkillMethod = serveCount % 1;
+    serveCount++;
+    this.usingSkill = SkillType.none;
+    this.serveFixedOrder = true;
   }
 }
 
@@ -804,11 +809,14 @@ function caculate_expected_landing_point_x_for(ball) {
  * @param {PikaUserInput} userInput user input of the player whom computer controls
  */
 function letComputerDecideUserInput(player, ball, theOtherPlayer, userInput) {
-  return Thunderball(player, ball, theOtherPlayer, userInput);
+
   userInput.xDirection = 0;
   userInput.yDirection = 0;
   userInput.powerHit = 0;
-
+  if (player.isPlayer2 === false)
+    return Player1Serve(player, ball, theOtherPlayer, userInput);
+  else if ((player.isPlayer2 === true))
+    return Player2Serve(player, ball, theOtherPlayer, userInput);
   let virtualExpectedLandingPointX = ball.expectedLandingPointX;
   if (
     Math.abs(ball.x - player.x) > 100 &&
@@ -1034,47 +1042,121 @@ function expectedLandingPointXWhenPowerHit(
     copyBall.yVelocity += 1;
   }
 }
-function Thunderball(
+function Player1Serve(
   player,
   ball,
   theOtherPlayer,
   userInput
 ) {
-  if (player.isPlayer2) {
-    if (player.phase == 0) {
-      userInput.xDirection = -1;
-      userInput.yDirection = 0;
-      userInput.powerHit = 0;
-      player.phase = 1;
+  //pass
+}
+
+
+const SkillType = {
+  none: 0,
+  halfStep: 1, //踮步
+  walkUntilNet: 2, //走到網前
+  hitNet: 3,
+  netThunder: 4, //彈網閃電
+};
+const fullSkillType = {
+  netThunder: 0
+}
+var serveCount = 0;
+
+function Player2Serve(
+  player,
+  ball,
+  theOtherPlayer,
+  userInput
+) {
+  function switchSkill() {
+    if (player.serveFixedOrder === true) {
+      if (player.fullSkillMethod === fullSkillType.netThunder) {
+        if (player.skillPhase === 0)
+          player.usingSkill = SkillType.halfStep;
+        else if (player.skillPhase === 1)
+          player.usingSkill = SkillType.walkUntilNet;
+        else if (player.skillPhase === 2)
+          player.usingSkill = SkillType.hitNet;
+        else if (player.skillPhase === 3)
+          player.usingSkill = SkillType.netThunder;
+      }
+      else;//pass
+    } else {
+      ;//pass
     }
-    else if (player.phase == 1) {
-      if (player.isCollisionWithBallHappened) {
+    player.skillPhase++;
+    player.skillSubPhase = 0;
+  };
+  if (player.skillPhase === 0) {
+    switchSkill();
+  }
+  if (player.skillPhase === 1) {
+    if (player.usingSkill === SkillType.halfStep) {
+      if (player.skillSubPhase === 0) {
         userInput.xDirection = -1;
-        userInput.yDirection = 0;
-        userInput.powerHit = 0;
-        player.phase = 2;
+        player.skillSubPhase++;
+      }
+      else if (player.skillSubPhase === 1) {
+        if (player.isCollisionWithBallHappened)
+          switchSkill();
       }
     }
-    else if (player.phase == 2) {
+    else;//pass
+  }
+  else if (player.skillPhase === 2) {
+    if (player.usingSkill === SkillType.walkUntilNet) {
       userInput.xDirection = -1;
-      userInput.yDirection = 0;
-      userInput.powerHit = 0;
-      if (ball.y > 176 && ball.x < 300)
-        player.phase = 3;
+      if (ball.y > 100 && ball.x < 300)
+        switchSkill();
     }
-    else if (player.phase == 3) {
-      userInput.xDirection = -1;
-      userInput.yDirection = -1;
-      userInput.powerHit = 1;
-      if (ball.x < 300 && ball.xVelocity < 0)
-        player.phase = 4;
+    else;//pass
+  }
+  else if (player.skillPhase === 3) {
+    if (player.usingSkill === SkillType.hitNet) {
+      if (player.skillSubPhase === 0) {
+        if (ball.y > 176 && ball.x < 300)
+          player.skillSubPhase++
+      }
+      else if (player.skillSubPhase === 1) {
+        userInput.xDirection = -1;
+        userInput.yDirection = -1;
+        userInput.powerHit = 1;
+        if (ball.x < 300 && ball.xVelocity < 0)
+          switchSkill();
+      }
     }
-    else if (player.phase == 4) {
+    else;//pass
+  }
+  else if (player.skillPhase === 4) {
+    if (player.usingSkill === SkillType.netThunder) {
       userInput.xDirection = 0;
       userInput.yDirection = 1;
       userInput.powerHit = 1;
     }
+    else;//pass
+  }/*
+  else if (player.skillPhase == 3) {
+    userInput.xDirection = -1;
+    userInput.yDirection = 0;
+    userInput.powerHit = 0;
+    if (ball.y > 176 && ball.x < 300)
+      player.phase = 3;
   }
+  else if (player.phase == 3) {
+    userInput.xDirection = -1;
+    userInput.yDirection = -1;
+    userInput.powerHit = 1;
+    if (ball.x < 300 && ball.xVelocity < 0)
+      player.phase = 4;
+  }
+  else if (player.phase == 4) {
+    userInput.xDirection = 0;
+    userInput.yDirection = 1;
+    userInput.powerHit = 1;
+  }
+*/
 
 
 }
