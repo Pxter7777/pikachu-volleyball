@@ -28,7 +28,7 @@
  */
 'use strict';
 import { rand } from './rand.js';
-import { serveMode } from './ui.js';
+import { serveMode, SkillTypeForPlayer2Available } from './ui.js';
 
 /** @constant @type {number} ground width */
 const GROUND_WIDTH = 432;
@@ -1072,12 +1072,12 @@ const fullSkillTypeForPlayer1 = {
 const fullSkillTypeForPlayer2 = {
   netThunder: 0,
   fakeNetThunderFlat: 1,
-  tossAndFlat: 2,
-  headThunder: 3,
-  fakeHeadThunderFlat: 4,
-  breakNet: 5,
+  breakNet: 2,
+  tossAndFlat: 3,
+  headThunder: 4,
+  fakeHeadThunderFlat: 5,
 };
-var SkillTypeForPlayer2Available = [true, true, false, false, false, true];
+//var SkillTypeForPlayer2Available = [true, true, false, false, false, true];
 function ChooseSkillTypeForPlayer1() {
   if (serveMode == 0) {
     while (1) {
@@ -1095,16 +1095,15 @@ function ChooseSkillTypeForPlayer1() {
     }
   }
 }
-
 function ChooseSkillTypeForPlayer2() {
-  if (serveMode == 0) {
+  if (serveMode === 0) {
     while (1) {
       var select = rand() % 6;
       if (SkillTypeForPlayer2Available[select])
         return select;
     }
   }
-  else if (serveMode == 1) {
+  else if (serveMode === 1) {
     while (1) {
       if (SkillTypeForPlayer2Available[serveCount % 6])
         return serveCount % 6;
@@ -1195,7 +1194,7 @@ function Player2Serve(
     }
     player.skillPhase++;
     player.skillSubPhase = 0;
-    console.log(player.usingSkill);
+    //console.log(player.usingSkill);
     //console.log("size=", fullSkillTypeForPlayer2.keys());
   };
   if (player.skillPhase === 0) {

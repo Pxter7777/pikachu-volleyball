@@ -2,9 +2,13 @@
  * Manages event listeners relevant to the UI (menu bar, buttons, etc.) of the web page
  */
 'use strict';
+
+import { LineStyle } from 'pixi.js-legacy';
+
 /** @typedef {import('./pikavolley.js').PikachuVolleyball} PikachuVolleyball */
 /** @typedef {import('pixi.js-legacy').Ticker} Ticker */
 export var serveMode = 1;
+export var SkillTypeForPlayer2Available = [true, true, true, true, true, true];
 /**
  * Enum for "game paused by what?".
  * The greater the number, the higher the precedence.
@@ -390,7 +394,81 @@ function setUpBtns(pikaVolley, ticker) {
     serveModeFixedBtn.classList.add('selected');
     serveMode = 1;
   });
-
+  const serveAvailablePlayer10Btn = document.getElementById('serve-available-player1-0-btn');
+  const serveAvailablePlayer11Btn = document.getElementById('serve-available-player1-1-btn');
+  const serveAvailablePlayer12Btn = document.getElementById('serve-available-player1-2-btn');
+  const serveAvailablePlayer13Btn = document.getElementById('serve-available-player1-3-btn');
+  const serveAvailablePlayer14Btn = document.getElementById('serve-available-player1-4-btn');
+  const serveAvailablePlayer15Btn = document.getElementById('serve-available-player1-5-btn');
+  function CountAvailable(avail) {
+    return avail.filter(x => x === true).length;
+  }
+  serveAvailablePlayer10Btn.addEventListener('click', () => {
+    console.log(CountAvailable(SkillTypeForPlayer2Available));
+    if (SkillTypeForPlayer2Available[0] === true && CountAvailable(SkillTypeForPlayer2Available) >= 2) {
+      SkillTypeForPlayer2Available[0] = false;
+      serveAvailablePlayer10Btn.classList.remove('selected');
+    }
+    else if (SkillTypeForPlayer2Available[0] === false) {
+      SkillTypeForPlayer2Available[0] = true;
+      serveAvailablePlayer10Btn.classList.add('selected');
+    }
+  });
+  serveAvailablePlayer11Btn.addEventListener('click', () => {
+    console.log(CountAvailable(SkillTypeForPlayer2Available));
+    if (SkillTypeForPlayer2Available[1] === true && CountAvailable(SkillTypeForPlayer2Available) >= 2) {
+      SkillTypeForPlayer2Available[1] = false;
+      serveAvailablePlayer11Btn.classList.remove('selected');
+    }
+    else if (SkillTypeForPlayer2Available[1] === false) {
+      SkillTypeForPlayer2Available[1] = true;
+      serveAvailablePlayer11Btn.classList.add('selected');
+    }
+  });
+  serveAvailablePlayer12Btn.addEventListener('click', () => {
+    console.log(CountAvailable(SkillTypeForPlayer2Available));
+    if (SkillTypeForPlayer2Available[2] === true && CountAvailable(SkillTypeForPlayer2Available) >= 2) {
+      SkillTypeForPlayer2Available[2] = false;
+      serveAvailablePlayer12Btn.classList.remove('selected');
+    }
+    else if (SkillTypeForPlayer2Available[2] === false) {
+      SkillTypeForPlayer2Available[2] = true;
+      serveAvailablePlayer12Btn.classList.add('selected');
+    }
+  });
+  serveAvailablePlayer13Btn.addEventListener('click', () => {
+    console.log(CountAvailable(SkillTypeForPlayer2Available));
+    if (SkillTypeForPlayer2Available[3] === true && CountAvailable(SkillTypeForPlayer2Available) >= 2) {
+      SkillTypeForPlayer2Available[3] = false;
+      serveAvailablePlayer13Btn.classList.remove('selected');
+    }
+    else if (SkillTypeForPlayer2Available[3] === false) {
+      SkillTypeForPlayer2Available[3] = true;
+      serveAvailablePlayer13Btn.classList.add('selected');
+    }
+  });
+  serveAvailablePlayer14Btn.addEventListener('click', () => {
+    console.log(CountAvailable(SkillTypeForPlayer2Available));
+    if (SkillTypeForPlayer2Available[4] === true && CountAvailable(SkillTypeForPlayer2Available) >= 2) {
+      SkillTypeForPlayer2Available[4] = false;
+      serveAvailablePlayer14Btn.classList.remove('selected');
+    }
+    else if (SkillTypeForPlayer2Available[4] === false) {
+      SkillTypeForPlayer2Available[4] = true;
+      serveAvailablePlayer14Btn.classList.add('selected');
+    }
+  });
+  serveAvailablePlayer15Btn.addEventListener('click', () => {
+    console.log(CountAvailable(SkillTypeForPlayer2Available));
+    if (SkillTypeForPlayer2Available[5] === true && CountAvailable(SkillTypeForPlayer2Available) >= 2) {
+      SkillTypeForPlayer2Available[5] = false;
+      serveAvailablePlayer15Btn.classList.remove('selected');
+    }
+    else if (SkillTypeForPlayer2Available[5] === false) {
+      SkillTypeForPlayer2Available[5] = true;
+      serveAvailablePlayer15Btn.classList.add('selected');
+    }
+  });
 
   const aboutBox = document.getElementById('about-box');
   const closeAboutBtn = document.getElementById('close-about-btn');
@@ -479,6 +557,11 @@ function setUpToShowDropdownsAndSubmenus(pikaVolley) {
     .addEventListener('mouseover', () => {
       showSubmenu('serve-mode-submenu-btn', 'serve-mode-submenu');
     });
+  document
+    .getElementById('serve-available-player1-submenu-btn')
+    .addEventListener('mouseover', () => {
+      showSubmenu('serve-available-player1-submenu-btn', 'serve-available-player1-submenu');
+    });
 
   // set up to show submenus on click event
   // (it is for touch device equipped with physical keyboard)
@@ -505,6 +588,11 @@ function setUpToShowDropdownsAndSubmenus(pikaVolley) {
     .getElementById('serve-mode-submenu-btn')
     .addEventListener('click', () => {
       showSubmenu('serve-mode-submenu-btn', 'serve-mode-submenu');
+    });
+  document
+    .getElementById('serve-available-player1-submenu-btn')
+    .addEventListener('click', () => {
+      showSubmenu('serve-available-player1-submenu-btn', 'serve-available-player1-submenu');
     });
 }
 
