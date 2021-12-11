@@ -215,8 +215,8 @@ class Player {
     /*thunder ball phase*/
     this.skillPhase = 0;
     this.skillSubPhase = 0;
-    this.fullSkillMethod = serveCount % 1;
-    serveCount++;
+    this.fullSkillMethod = serveCount % 3;
+
     this.usingSkill = SkillType.none;
     this.serveFixedOrder = true;
   }
@@ -1058,9 +1058,12 @@ const SkillType = {
   walkUntilNet: 2, //走到網前
   hitNet: 3,
   netThunder: 4, //彈網閃電
+  fakeNetThunderFlat: 5
 };
 const fullSkillType = {
-  netThunder: 0
+  netThunder: 0,
+  fakeNetThunderFlat: 1,
+  tossAndFlat: 2
 }
 var serveCount = 0;
 
@@ -1082,7 +1085,24 @@ function Player2Serve(
         else if (player.skillPhase === 3)
           player.usingSkill = SkillType.netThunder;
       }
-      else;//pass
+      else if (player.fullSkillMethod === fullSkillType.fakeNetThunderFlat) {
+        if (player.skillPhase === 0)
+          player.usingSkill = SkillType.halfStep;
+        else if (player.skillPhase === 1)
+          player.usingSkill = SkillType.walkUntilNet;
+        else if (player.skillPhase === 2)
+          player.usingSkill = SkillType.hitNet;
+        else if (player.skillPhase === 3)
+          player.usingSkill = SkillType.fakeNetThunderFlat;
+      }
+      else if (player.fullSkillMethod === fullSkillType.tossAndFlat) {
+        if (player.skillPhase === 0)
+          player.usingSkill = SkillType.halfStep;
+        else if (player.skillPhase === 1)
+          player.usingSkill = SkillType.walkUntilNet;
+        else if (player.skillPhase === 2)
+          player.usingSkill = SkillType.tossAndFlat;
+      }
     } else {
       ;//pass
     }
@@ -1091,6 +1111,7 @@ function Player2Serve(
   };
   if (player.skillPhase === 0) {
     switchSkill();
+    serveCount++;
   }
   if (player.skillPhase === 1) {
     if (player.usingSkill === SkillType.halfStep) {
@@ -1127,15 +1148,26 @@ function Player2Serve(
           switchSkill();
       }
     }
-    else;//pass
+    else if (player.usingSkill === SkillType.tossAndFlat) {
+      if (player.skillSubPhase === 0) {
+        userInput.yDirection = -1;
+        player.skillSubPhase++;
+      }
+      else if (player.skillSubPhase === 1) {
+        userInput.xDirection = -1;
+        userInput.powerHit = 1;
+      }
+    }
   }
   else if (player.skillPhase === 4) {
     if (player.usingSkill === SkillType.netThunder) {
-      userInput.xDirection = 0;
       userInput.yDirection = 1;
       userInput.powerHit = 1;
     }
-    else;//pass
+    else if (player.usingSkill === SkillType.fakeNetThunderFlat) {
+      userInput.xDirection = -1;
+      userInput.powerHit = 1;
+    }//pass
   }/*
   else if (player.skillPhase == 3) {
     userInput.xDirection = -1;
