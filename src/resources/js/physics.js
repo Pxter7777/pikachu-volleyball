@@ -164,6 +164,7 @@ class Player {
       pika: false,
       chu: false,
     };
+
   }
 
   /**
@@ -211,6 +212,8 @@ class Player {
      * @type {number} 0, 1, 2, 3 or 4
      */
     this.computerBoldness = rand() % 5; // 0xD8  // initialized to (_rand() % 5)
+    /*thunder ball phase*/
+    this.phase = 0;
   }
 }
 
@@ -801,6 +804,7 @@ function caculate_expected_landing_point_x_for(ball) {
  * @param {PikaUserInput} userInput user input of the player whom computer controls
  */
 function letComputerDecideUserInput(player, ball, theOtherPlayer, userInput) {
+  return Thunderball(player, ball, theOtherPlayer, userInput);
   userInput.xDirection = 0;
   userInput.yDirection = 0;
   userInput.powerHit = 0;
@@ -814,7 +818,7 @@ function letComputerDecideUserInput(player, ball, theOtherPlayer, userInput) {
     if (
       (ball.expectedLandingPointX <= leftBoundary ||
         ball.expectedLandingPointX >=
-          Number(player.isPlayer2) * GROUND_WIDTH + GROUND_HALF_WIDTH) &&
+        Number(player.isPlayer2) * GROUND_WIDTH + GROUND_HALF_WIDTH) &&
       player.computerWhereToStandBy === 0
     ) {
       // If conditions above met, the computer estimates the proper location to stay as the middle point of their side
@@ -853,7 +857,7 @@ function letComputerDecideUserInput(player, ball, theOtherPlayer, userInput) {
       ball.expectedLandingPointX > leftBoundary &&
       ball.expectedLandingPointX < rightBoundary &&
       Math.abs(ball.x - player.x) >
-        player.computerBoldness * 5 + PLAYER_LENGTH &&
+      player.computerBoldness * 5 + PLAYER_LENGTH &&
       ball.x > leftBoundary &&
       ball.x < rightBoundary &&
       ball.y > 174
@@ -918,7 +922,7 @@ function decideWhetherInputPowerHit(player, ball, theOtherPlayer, userInput) {
           (expectedLandingPointX <=
             Number(player.isPlayer2) * GROUND_HALF_WIDTH ||
             expectedLandingPointX >=
-              Number(player.isPlayer2) * GROUND_WIDTH + GROUND_HALF_WIDTH) &&
+            Number(player.isPlayer2) * GROUND_WIDTH + GROUND_HALF_WIDTH) &&
           Math.abs(expectedLandingPointX - theOtherPlayer.x) > PLAYER_LENGTH
         ) {
           userInput.xDirection = xDirection;
@@ -939,7 +943,7 @@ function decideWhetherInputPowerHit(player, ball, theOtherPlayer, userInput) {
           (expectedLandingPointX <=
             Number(player.isPlayer2) * GROUND_HALF_WIDTH ||
             expectedLandingPointX >=
-              Number(player.isPlayer2) * GROUND_WIDTH + GROUND_HALF_WIDTH) &&
+            Number(player.isPlayer2) * GROUND_WIDTH + GROUND_HALF_WIDTH) &&
           Math.abs(expectedLandingPointX - theOtherPlayer.x) > PLAYER_LENGTH
         ) {
           userInput.xDirection = xDirection;
@@ -1029,4 +1033,48 @@ function expectedLandingPointXWhenPowerHit(
     copyBall.x = copyBall.x + copyBall.xVelocity;
     copyBall.yVelocity += 1;
   }
+}
+function Thunderball(
+  player,
+  ball,
+  theOtherPlayer,
+  userInput
+) {
+  if (player.isPlayer2) {
+    if (player.phase == 0) {
+      userInput.xDirection = -1;
+      userInput.yDirection = 0;
+      userInput.powerHit = 0;
+      player.phase = 1;
+    }
+    else if (player.phase == 1) {
+      if (player.isCollisionWithBallHappened) {
+        userInput.xDirection = -1;
+        userInput.yDirection = 0;
+        userInput.powerHit = 0;
+        player.phase = 2;
+      }
+    }
+    else if (player.phase == 2) {
+      userInput.xDirection = -1;
+      userInput.yDirection = 0;
+      userInput.powerHit = 0;
+      if (ball.y > 176 && ball.x < 300)
+        player.phase = 3;
+    }
+    else if (player.phase == 3) {
+      userInput.xDirection = -1;
+      userInput.yDirection = -1;
+      userInput.powerHit = 1;
+      if (ball.x < 300 && ball.xVelocity < 0)
+        player.phase = 4;
+    }
+    else if (player.phase == 4) {
+      userInput.xDirection = 0;
+      userInput.yDirection = 1;
+      userInput.powerHit = 1;
+    }
+  }
+
+
 }
