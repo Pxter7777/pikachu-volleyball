@@ -220,6 +220,7 @@ class Player {
       this.fullSkillMethod = ChooseSkillTypeForPlayer1();
     else if (this.isPlayer2 === true)
       this.fullSkillMethod = ChooseSkillTypeForPlayer2();
+    lastSkill = this.fullSkillMethod;
 
 
     //this.fullSkillMethod = fullSkillTypeForPlayer2.tossAndFlat;
@@ -1088,12 +1089,17 @@ const fullSkillTypeForPlayer2 = {
   fakeNetThunderFlat: 5,
 };
 //var SkillTypeForPlayer2Available = [true, true, false, false, false, true];
+var lastSkill = -1;
+function CountAvailable(avail) {
+  return avail.filter(x => x === true).length;
+}
 function ChooseSkillTypeForPlayer1() {
   if (serveMode == 0) {
     while (1) {
       var select = rand() % 9;
       if (SkillTypeForPlayer1Available[select])
-        return select;
+        if (CountAvailable(SkillTypeForPlayer1Available) <= 2 || select != lastSkill)
+          return select;
     }
   }
   else if (serveMode == 1) {
@@ -1110,7 +1116,8 @@ function ChooseSkillTypeForPlayer2() {
     while (1) {
       var select = rand() % 6;
       if (SkillTypeForPlayer2Available[select])
-        return select;
+        if (CountAvailable(SkillTypeForPlayer1Available) <= 2 || select != lastSkill)
+          return select;
     }
   }
   else if (serveMode === 1) {
