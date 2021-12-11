@@ -216,11 +216,13 @@ class Player {
     /*thunder ball phase*/
     this.skillPhase = 0;
     this.skillSubPhase = 0;
-    if (serveMode == 0)
-      this.fullSkillMethod = rand() % 6;
-    else
-      this.fullSkillMethod = serveCount % 6;
-    //this.fullSkillMethod = fullSkillType.tossAndFlat;
+    if (this.isPlayer2 === false)
+      this.fullSkillMethod = ChooseSkillTypeForPlayer1();
+    else if (this.isPlayer2 === true)
+      this.fullSkillMethod = ChooseSkillTypeForPlayer2();
+
+
+    //this.fullSkillMethod = fullSkillTypeForPlayer2.tossAndFlat;
     this.usingSkill = SkillType.none;
     this.serveFixedOrder = true;
   }
@@ -1046,14 +1048,7 @@ function expectedLandingPointXWhenPowerHit(
     copyBall.yVelocity += 1;
   }
 }
-function Player1Serve(
-  player,
-  ball,
-  theOtherPlayer,
-  userInput
-) {
-  //pass
-}
+
 
 
 const SkillType = {
@@ -1068,16 +1063,72 @@ const SkillType = {
   fakeHeadThunderFlat: 8,
   breakNet: 9,
 };
-const fullSkillType = {
+const fullSkillTypeForPlayer1 = {
+  breakNet: 0,
+  tossAndFlat: 1,
+  headThunder: 2,
+  fakeHeadThunderFlat: 3,
+};
+const fullSkillTypeForPlayer2 = {
   netThunder: 0,
   fakeNetThunderFlat: 1,
   tossAndFlat: 2,
   headThunder: 3,
   fakeHeadThunderFlat: 4,
   breakNet: 5,
+};
+var SkillTypeForPlayer2Available = [true, true, false, false, false, true];
+function ChooseSkillTypeForPlayer1() {
+  if (serveMode == 0) {
+    while (1) {
+      var select = rand() % 6;
+      if (SkillTypeForPlayer2Available[select])
+        return select;
+    }
+  }
+  else if (serveMode == 1) {
+    while (1) {
+      if (SkillTypeForPlayer2Available[serveCount % 6])
+        return serveCount % 6;
+      else
+        serveCount++;
+    }
+  }
+}
+
+function ChooseSkillTypeForPlayer2() {
+  if (serveMode == 0) {
+    while (1) {
+      var select = rand() % 6;
+      if (SkillTypeForPlayer2Available[select])
+        return select;
+    }
+  }
+  else if (serveMode == 1) {
+    while (1) {
+      if (SkillTypeForPlayer2Available[serveCount % 6])
+        return serveCount % 6;
+      else
+        serveCount++;
+    }
+  }
 }
 var serveCount = 0;
-
+function Player1Serve(
+  player,
+  ball,
+  theOtherPlayer,
+  userInput
+) {
+  function switchSkill() {
+    if (player.serveFixedOrder === true) {
+      if (player.fullSkillMethod === fullSkillTypeForPlayer1.breakNet) {
+        ;
+      }
+    }
+    else;//pass
+  }
+}
 function Player2Serve(
   player,
   ball,
@@ -1086,7 +1137,7 @@ function Player2Serve(
 ) {
   function switchSkill() {
     if (player.serveFixedOrder === true) {
-      if (player.fullSkillMethod === fullSkillType.netThunder) {
+      if (player.fullSkillMethod === fullSkillTypeForPlayer2.netThunder) {
         if (player.skillPhase === 0)
           player.usingSkill = SkillType.halfStep;
         else if (player.skillPhase === 1)
@@ -1096,7 +1147,7 @@ function Player2Serve(
         else if (player.skillPhase === 3)
           player.usingSkill = SkillType.netThunder;
       }
-      else if (player.fullSkillMethod === fullSkillType.fakeNetThunderFlat) {
+      else if (player.fullSkillMethod === fullSkillTypeForPlayer2.fakeNetThunderFlat) {
         if (player.skillPhase === 0)
           player.usingSkill = SkillType.halfStep;
         else if (player.skillPhase === 1)
@@ -1106,7 +1157,7 @@ function Player2Serve(
         else if (player.skillPhase === 3)
           player.usingSkill = SkillType.fakeNetThunderFlat;
       }
-      else if (player.fullSkillMethod === fullSkillType.tossAndFlat) {
+      else if (player.fullSkillMethod === fullSkillTypeForPlayer2.tossAndFlat) {
         if (player.skillPhase === 0)
           player.usingSkill = SkillType.halfStep;
         else if (player.skillPhase === 1)
@@ -1114,7 +1165,7 @@ function Player2Serve(
         else if (player.skillPhase === 2)
           player.usingSkill = SkillType.tossAndFlat;
       }
-      else if (player.fullSkillMethod === fullSkillType.headThunder) {
+      else if (player.fullSkillMethod === fullSkillTypeForPlayer2.headThunder) {
         if (player.skillPhase === 0)
           player.usingSkill = SkillType.halfStep;
         else if (player.skillPhase === 1)
@@ -1122,7 +1173,7 @@ function Player2Serve(
         else if (player.skillPhase === 2)
           player.usingSkill = SkillType.headThunder;
       }
-      else if (player.fullSkillMethod === fullSkillType.fakeHeadThunderFlat) {
+      else if (player.fullSkillMethod === fullSkillTypeForPlayer2.fakeHeadThunderFlat) {
         if (player.skillPhase === 0)
           player.usingSkill = SkillType.halfStep;
         else if (player.skillPhase === 1)
@@ -1130,7 +1181,7 @@ function Player2Serve(
         else if (player.skillPhase === 2)
           player.usingSkill = SkillType.fakeHeadThunderFlat;
       }
-      else if (player.fullSkillMethod === fullSkillType.breakNet) {
+      else if (player.fullSkillMethod === fullSkillTypeForPlayer2.breakNet) {
         if (player.skillPhase === 0)
           player.usingSkill = SkillType.halfStep;
         else if (player.skillPhase === 1)
@@ -1145,7 +1196,7 @@ function Player2Serve(
     player.skillPhase++;
     player.skillSubPhase = 0;
     console.log(player.usingSkill);
-    console.log("servmode=", serveMode);
+    //console.log("size=", fullSkillTypeForPlayer2.keys());
   };
   if (player.skillPhase === 0) {
     switchSkill();
@@ -1250,28 +1301,6 @@ function Player2Serve(
     else if (player.usingSkill === SkillType.fakeNetThunderFlat) {
       userInput.xDirection = -1;
       userInput.powerHit = 1;
-    }//pass
-  }/*
-  else if (player.skillPhase == 3) {
-    userInput.xDirection = -1;
-    userInput.yDirection = 0;
-    userInput.powerHit = 0;
-    if (ball.y > 176 && ball.x < 300)
-      player.phase = 3;
+    }
   }
-  else if (player.phase == 3) {
-    userInput.xDirection = -1;
-    userInput.yDirection = -1;
-    userInput.powerHit = 1;
-    if (ball.x < 300 && ball.xVelocity < 0)
-      player.phase = 4;
-  }
-  else if (player.phase == 4) {
-    userInput.xDirection = 0;
-    userInput.yDirection = 1;
-    userInput.powerHit = 1;
-  }
-*/
-
-
 }
