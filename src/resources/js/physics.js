@@ -129,6 +129,9 @@ class Player {
    * @param {boolean} isComputer Is this player controlled by computer?
    */
   constructor(isPlayer2, isComputer) {
+
+    this.serve = new ServingMaching(isPlayer2);
+
     /** @type {boolean} Is this player on the right side? */
     this.isPlayer2 = isPlayer2; // 0xA0
     /** @type {boolean} Is controlled by computer? */
@@ -221,11 +224,18 @@ class Player {
         this.fullSkillMethod = ChooseSkillTypeForPlayer1();
       else if (this.isPlayer2 === true)
         this.fullSkillMethod = ChooseSkillTypeForPlayer2();
+      //console.log(lastSkill, this.fullSkillMethod);
       lastSkill = this.fullSkillMethod;
     }
+
     //this.fullSkillMethod = fullSkillTypeForPlayer2.tossAndFlat;
     this.usingSkill = SkillType.none;
     this.serveFixedOrder = true;
+    if (this.isComputer === true) {
+      this.serve.chooseNextSkill();
+      console.log("new skill choose", this.serve.usingFullSkill, this.serve.skillList);
+    }
+
   }
 }
 
@@ -1050,7 +1060,59 @@ function expectedLandingPointXWhenPowerHit(
   }
 }
 
+class ServingMaching {
+  constructor(isPlayer2) {
+    this.isPlayer2 = isPlayer2;
 
+    if (isPlayer2 === false)
+      this.skillCount = 6;
+    else if (isPlayer2 === true)
+      this.skillCount = 9;
+    this.randServeIndex = this.skillCount - 1;
+    this.skillList = [...Array(this.skillCount).keys()];
+    this.usingFullSkill = -1;
+    console.log(this.skillList);
+  }
+  shuffle() {
+    for (let i = this.skillCount - 1; i >= 0; i--) {
+      var randomIndex = Math.floor(Math.random() * (i + 1));
+      // swap
+      let temp = this.skillList[randomIndex];
+      this.skillList[randomIndex] = this.skillList[i];
+      this.skillList[i] = temp;
+    }
+  }
+  chooseNextSkill() {
+    if (serveMode === 0)
+      while (1) {
+        // get next
+        this.usingFullSkill = this.skillList[this.randServeIndex];
+        this.randServeIndex++;
+        if (this.randServeIndex === this.skillCount) {
+          this.randServeIndex = 0;
+          this.shuffle();
+        }
+        // check if it's available
+        if (this.isPlayer2 === false && SkillTypeForPlayer1Available[this.usingFullSkill] === true)
+          return;
+        else if (this.isPlayer2 === true && SkillTypeForPlayer2Available[this.usingFullSkill] === true)
+          return;
+      }
+    else if (serveMode === 1)
+      while (1) {
+        // get next
+        this.usingFullSkill++;
+        if (this.usingFullSkill === this.skillCount)
+          this.usingFullSkill = 0;
+        // check if it's available
+        if (this.isPlayer2 === false && SkillTypeForPlayer1Available[this.usingFullSkill] === true)
+          return;
+        else if (this.isPlayer2 === true && SkillTypeForPlayer2Available[this.usingFullSkill] === true)
+          return;
+      }
+  }
+
+};
 
 const SkillType = {
   none: 0,
