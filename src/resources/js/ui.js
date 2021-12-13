@@ -91,11 +91,14 @@ export function setUpUI(pikaVolley, ticker) {
 function setUpBtns(pikaVolley, ticker) {
   const gameDropdownBtn = document.getElementById('game-dropdown-btn');
   const optionsDropdownBtn = document.getElementById('options-dropdown-btn');
+  const serveModeDropdownBtn = document.getElementById('serve-mode-dropdown-btn');
   const aboutBtn = document.getElementById('about-btn');
   // @ts-ignore
   gameDropdownBtn.disabled = false;
   // @ts-ignore
   optionsDropdownBtn.disabled = false;
+  // @ts-ignore
+  serveModeDropdownBtn.disabled = false;
   // @ts-ignore
   aboutBtn.disabled = false;
 
@@ -224,6 +227,8 @@ function setUpBtns(pikaVolley, ticker) {
       // @ts-ignore
       optionsDropdownBtn.disabled = true;
       // @ts-ignore
+      serveModeDropdownBtn.disabled = true;
+      // @ts-ignore
       aboutBtn.disabled = true;
       pauseResumeManager.pause(pikaVolley, PauseResumePrecedence.messageBox);
       return;
@@ -235,6 +240,8 @@ function setUpBtns(pikaVolley, ticker) {
       gameDropdownBtn.disabled = true;
       // @ts-ignore
       optionsDropdownBtn.disabled = true;
+      // @ts-ignore
+      serveModeDropdownBtn.disabled = true;
       // @ts-ignore
       aboutBtn.disabled = true;
       pauseResumeManager.pause(pikaVolley, PauseResumePrecedence.messageBox);
@@ -257,6 +264,8 @@ function setUpBtns(pikaVolley, ticker) {
       // @ts-ignore
       optionsDropdownBtn.disabled = true;
       // @ts-ignore
+      serveModeDropdownBtn.disabled = true;
+      // @ts-ignore
       aboutBtn.disabled = true;
       pauseResumeManager.pause(pikaVolley, PauseResumePrecedence.messageBox);
       return;
@@ -268,6 +277,8 @@ function setUpBtns(pikaVolley, ticker) {
       gameDropdownBtn.disabled = true;
       // @ts-ignore
       optionsDropdownBtn.disabled = true;
+      // @ts-ignore
+      serveModeDropdownBtn.disabled = true;
       // @ts-ignore
       aboutBtn.disabled = true;
       pauseResumeManager.pause(pikaVolley, PauseResumePrecedence.messageBox);
@@ -290,6 +301,8 @@ function setUpBtns(pikaVolley, ticker) {
       // @ts-ignore
       optionsDropdownBtn.disabled = true;
       // @ts-ignore
+      serveModeDropdownBtn.disabled = true;
+      // @ts-ignore
       aboutBtn.disabled = true;
       pauseResumeManager.pause(pikaVolley, PauseResumePrecedence.messageBox);
       return;
@@ -301,6 +314,8 @@ function setUpBtns(pikaVolley, ticker) {
       gameDropdownBtn.disabled = true;
       // @ts-ignore
       optionsDropdownBtn.disabled = true;
+      // @ts-ignore
+      serveModeDropdownBtn.disabled = true;
       // @ts-ignore
       aboutBtn.disabled = true;
       pauseResumeManager.pause(pikaVolley, PauseResumePrecedence.messageBox);
@@ -323,6 +338,8 @@ function setUpBtns(pikaVolley, ticker) {
       // @ts-ignore
       optionsDropdownBtn.disabled = true;
       // @ts-ignore
+      serveModeDropdownBtn.disabled = true;
+      // @ts-ignore
       aboutBtn.disabled = true;
       pauseResumeManager.pause(pikaVolley, PauseResumePrecedence.messageBox);
       return;
@@ -334,6 +351,8 @@ function setUpBtns(pikaVolley, ticker) {
       gameDropdownBtn.disabled = true;
       // @ts-ignore
       optionsDropdownBtn.disabled = true;
+      // @ts-ignore
+      serveModeDropdownBtn.disabled = true;
       // @ts-ignore
       aboutBtn.disabled = true;
       pauseResumeManager.pause(pikaVolley, PauseResumePrecedence.messageBox);
@@ -353,6 +372,8 @@ function setUpBtns(pikaVolley, ticker) {
       // @ts-ignore
       optionsDropdownBtn.disabled = false;
       // @ts-ignore
+      serveModeDropdownBtn.disabled = false;
+      // @ts-ignore
       aboutBtn.disabled = false;
       pauseResumeManager.resume(pikaVolley, PauseResumePrecedence.messageBox);
     }
@@ -364,6 +385,8 @@ function setUpBtns(pikaVolley, ticker) {
       gameDropdownBtn.disabled = false;
       // @ts-ignore
       optionsDropdownBtn.disabled = false;
+      // @ts-ignore
+      serveModeDropdownBtn.disabled = false;
       // @ts-ignore
       aboutBtn.disabled = false;
       pauseResumeManager.resume(pikaVolley, PauseResumePrecedence.messageBox);
@@ -383,8 +406,8 @@ function setUpBtns(pikaVolley, ticker) {
     pikaVolley.isPracticeMode = false;
   });
 
-  const serveModeRandomBtn = document.getElementById('serve-mode-random-btn');
-  const serveModeFixedBtn = document.getElementById('serve-mode-fixed-btn');
+  const serveModeRandomBtn = document.getElementById('random-order-btn');
+  const serveModeFixedBtn = document.getElementById('fixed-order-btn');
   serveModeRandomBtn.addEventListener('click', () => {
     serveModeFixedBtn.classList.remove('selected');
     serveModeRandomBtn.classList.add('selected');
@@ -574,6 +597,8 @@ function setUpBtns(pikaVolley, ticker) {
       gameDropdownBtn.disabled = true;
       // @ts-ignore
       optionsDropdownBtn.disabled = true;
+      // @ts-ignore
+      serveModeDropdownBtn.disabled = true;
       pauseResumeManager.pause(pikaVolley, PauseResumePrecedence.messageBox);
     } else {
       aboutBox.classList.add('hidden');
@@ -581,6 +606,8 @@ function setUpBtns(pikaVolley, ticker) {
       gameDropdownBtn.disabled = false;
       // @ts-ignore
       optionsDropdownBtn.disabled = false;
+      // @ts-ignore
+      serveModeDropdownBtn.disabled = false;
       pauseResumeManager.resume(pikaVolley, PauseResumePrecedence.messageBox);
     }
   });
@@ -591,6 +618,8 @@ function setUpBtns(pikaVolley, ticker) {
       gameDropdownBtn.disabled = false;
       // @ts-ignore
       optionsDropdownBtn.disabled = false;
+      // @ts-ignore
+      serveModeDropdownBtn.disabled = false;
       pauseResumeManager.resume(pikaVolley, PauseResumePrecedence.messageBox);
     }
   });
@@ -620,7 +649,9 @@ function setUpToShowDropdownsAndSubmenus(pikaVolley) {
     .addEventListener('click', () => {
       toggleDropdown('options-dropdown', pikaVolley);
     });
-
+  document.getElementById('serve-mode-dropdown-btn').addEventListener('click', () => {
+    toggleDropdown('serve-mode-dropdown', pikaVolley);
+  });
   // set up to show submenus on mouseover event
   document
     .getElementById('bgm-submenu-btn')
@@ -647,11 +678,13 @@ function setUpToShowDropdownsAndSubmenus(pikaVolley) {
     .addEventListener('mouseover', () => {
       showSubmenu('practice-mode-submenu-btn', 'practice-mode-submenu');
     });
+  /*
   document
     .getElementById('serve-mode-submenu-btn')
     .addEventListener('mouseover', () => {
       showSubmenu('serve-mode-submenu-btn', 'serve-mode-submenu');
     });
+  */
   document
     .getElementById('serve-available-player1-submenu-btn')
     .addEventListener('mouseover', () => {
@@ -683,11 +716,13 @@ function setUpToShowDropdownsAndSubmenus(pikaVolley) {
     .addEventListener('click', () => {
       showSubmenu('practice-mode-submenu-btn', 'practice-mode-submenu');
     });
+  /*
   document
     .getElementById('serve-mode-submenu-btn')
     .addEventListener('click', () => {
       showSubmenu('serve-mode-submenu-btn', 'serve-mode-submenu');
     });
+  */
   document
     .getElementById('serve-available-player1-submenu-btn')
     .addEventListener('click', () => {

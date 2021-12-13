@@ -81,10 +81,13 @@ function setUpInitialUI() {
   const closeAboutBtn = document.getElementById('close-about-btn');
   const gameDropdownBtn = document.getElementById('game-dropdown-btn');
   const optionsDropdownBtn = document.getElementById('options-dropdown-btn');
+  const serveModeDropdownBtn = document.getElementById('serve-mode-dropdown-btn');
   // @ts-ignore
   gameDropdownBtn.disabled = true;
   // @ts-ignore
   optionsDropdownBtn.disabled = true;
+  // @ts-ignore
+  serveModeDropdownBtn.disabled = true;
   const closeAboutBox = () => {
     if (!aboutBox.classList.contains('hidden')) {
       aboutBox.classList.add('hidden');

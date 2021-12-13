@@ -130,7 +130,7 @@ class Player {
    */
   constructor(isPlayer2, isComputer) {
 
-    this.serve = new ServingMaching(isPlayer2);
+    this.serve = new serveMaching(isPlayer2);
 
     /** @type {boolean} Is this player on the right side? */
     this.isPlayer2 = isPlayer2; // 0xA0
@@ -1066,7 +1066,7 @@ const serveModeT = {
   fixedOrder: 1,
   completeRandom: 2,
 };
-class ServingMaching {
+class serveMaching {
   constructor(isPlayer2) {
     this.isPlayer2 = isPlayer2;
 

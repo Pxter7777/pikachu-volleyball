@@ -115,6 +115,9 @@ a:active {
 #game-dropdown-btn {
   margin-left: 0;
 }
+#serve-mode-dropdown-btn {
+  width: var(--btn-width);
+}
 #about-btn {
   margin-right: 0;
 }
