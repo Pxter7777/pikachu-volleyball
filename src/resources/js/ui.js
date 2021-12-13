@@ -422,21 +422,6 @@ function setUpBtns(pikaVolley, ticker) {
   function CountAvailable(avail) {
     return avail.filter(x => x === true).length;
   }
-  const serveAvailablePlayer10Btn = document.getElementById('serve-available-player1-0-btn');
-  const serveAvailablePlayer11Btn = document.getElementById('serve-available-player1-1-btn');
-  const serveAvailablePlayer12Btn = document.getElementById('serve-available-player1-2-btn');
-  const serveAvailablePlayer13Btn = document.getElementById('serve-available-player1-3-btn');
-  const serveAvailablePlayer14Btn = document.getElementById('serve-available-player1-4-btn');
-  const serveAvailablePlayer15Btn = document.getElementById('serve-available-player1-5-btn');
-  const serveAvailablePlayer16Btn = document.getElementById('serve-available-player1-6-btn');
-  const serveAvailablePlayer17Btn = document.getElementById('serve-available-player1-7-btn');
-  const serveAvailablePlayer18Btn = document.getElementById('serve-available-player1-8-btn');
-  const serveAvailablePlayer20Btn = document.getElementById('serve-available-player2-0-btn');
-  const serveAvailablePlayer21Btn = document.getElementById('serve-available-player2-1-btn');
-  const serveAvailablePlayer22Btn = document.getElementById('serve-available-player2-2-btn');
-  const serveAvailablePlayer23Btn = document.getElementById('serve-available-player2-3-btn');
-  const serveAvailablePlayer24Btn = document.getElementById('serve-available-player2-4-btn');
-  const serveAvailablePlayer25Btn = document.getElementById('serve-available-player2-5-btn');
   const player1Skill0Checkbox = document.getElementById('player-1-skill-0-checkbox');
   const player1Skill1Checkbox = document.getElementById('player-1-skill-1-checkbox');
   const player1Skill2Checkbox = document.getElementById('player-1-skill-2-checkbox');
@@ -662,156 +647,6 @@ function setUpBtns(pikaVolley, ticker) {
         player2Skill5Checkbox.checked = true;
     }
   });
-  serveAvailablePlayer10Btn.addEventListener('click', () => {
-    if (SkillTypeForPlayer1Available[0] === true && CountAvailable(SkillTypeForPlayer1Available) >= 2) {
-      SkillTypeForPlayer1Available[0] = false;
-      serveAvailablePlayer10Btn.classList.remove('selected');
-    }
-    else if (SkillTypeForPlayer1Available[0] === false) {
-      SkillTypeForPlayer1Available[0] = true;
-      serveAvailablePlayer10Btn.classList.add('selected');
-    }
-  });
-  serveAvailablePlayer11Btn.addEventListener('click', () => {
-    if (SkillTypeForPlayer1Available[1] === true && CountAvailable(SkillTypeForPlayer1Available) >= 2) {
-      SkillTypeForPlayer1Available[1] = false;
-      serveAvailablePlayer11Btn.classList.remove('selected');
-    }
-    else if (SkillTypeForPlayer1Available[1] === false) {
-      SkillTypeForPlayer1Available[1] = true;
-      serveAvailablePlayer11Btn.classList.add('selected');
-    }
-  });
-  serveAvailablePlayer12Btn.addEventListener('click', () => {
-    if (SkillTypeForPlayer1Available[2] === true && CountAvailable(SkillTypeForPlayer1Available) >= 2) {
-      SkillTypeForPlayer1Available[2] = false;
-      serveAvailablePlayer12Btn.classList.remove('selected');
-    }
-    else if (SkillTypeForPlayer1Available[2] === false) {
-      SkillTypeForPlayer1Available[2] = true;
-      serveAvailablePlayer12Btn.classList.add('selected');
-    }
-  });
-  serveAvailablePlayer13Btn.addEventListener('click', () => {
-    if (SkillTypeForPlayer1Available[3] === true && CountAvailable(SkillTypeForPlayer1Available) >= 2) {
-      SkillTypeForPlayer1Available[3] = false;
-      serveAvailablePlayer13Btn.classList.remove('selected');
-    }
-    else if (SkillTypeForPlayer1Available[3] === false) {
-      SkillTypeForPlayer1Available[3] = true;
-      serveAvailablePlayer13Btn.classList.add('selected');
-    }
-  });
-  serveAvailablePlayer14Btn.addEventListener('click', () => {
-    if (SkillTypeForPlayer1Available[4] === true && CountAvailable(SkillTypeForPlayer1Available) >= 2) {
-      SkillTypeForPlayer1Available[4] = false;
-      serveAvailablePlayer14Btn.classList.remove('selected');
-    }
-    else if (SkillTypeForPlayer1Available[4] === false) {
-      SkillTypeForPlayer1Available[4] = true;
-      serveAvailablePlayer14Btn.classList.add('selected');
-    }
-  });
-  serveAvailablePlayer15Btn.addEventListener('click', () => {
-    if (SkillTypeForPlayer1Available[5] === true && CountAvailable(SkillTypeForPlayer1Available) >= 2) {
-      SkillTypeForPlayer1Available[5] = false;
-      serveAvailablePlayer15Btn.classList.remove('selected');
-    }
-    else if (SkillTypeForPlayer1Available[5] === false) {
-      SkillTypeForPlayer1Available[5] = true;
-      serveAvailablePlayer15Btn.classList.add('selected');
-    }
-  });
-  serveAvailablePlayer16Btn.addEventListener('click', () => {
-    if (SkillTypeForPlayer1Available[6] === true && CountAvailable(SkillTypeForPlayer1Available) >= 2) {
-      SkillTypeForPlayer1Available[6] = false;
-      serveAvailablePlayer16Btn.classList.remove('selected');
-    }
-    else if (SkillTypeForPlayer1Available[6] === false) {
-      SkillTypeForPlayer1Available[6] = true;
-      serveAvailablePlayer16Btn.classList.add('selected');
-    }
-  });
-  serveAvailablePlayer17Btn.addEventListener('click', () => {
-    if (SkillTypeForPlayer1Available[7] === true && CountAvailable(SkillTypeForPlayer1Available) >= 2) {
-      SkillTypeForPlayer1Available[7] = false;
-      serveAvailablePlayer17Btn.classList.remove('selected');
-    }
-    else if (SkillTypeForPlayer1Available[7] === false) {
-      SkillTypeForPlayer1Available[7] = true;
-      serveAvailablePlayer17Btn.classList.add('selected');
-    }
-  });
-  serveAvailablePlayer18Btn.addEventListener('click', () => {
-    if (SkillTypeForPlayer1Available[8] === true && CountAvailable(SkillTypeForPlayer1Available) >= 2) {
-      SkillTypeForPlayer1Available[8] = false;
-      serveAvailablePlayer18Btn.classList.remove('selected');
-    }
-    else if (SkillTypeForPlayer1Available[8] === false) {
-      SkillTypeForPlayer1Available[8] = true;
-      serveAvailablePlayer18Btn.classList.add('selected');
-    }
-  });
-  serveAvailablePlayer20Btn.addEventListener('click', () => {
-    if (SkillTypeForPlayer2Available[0] === true && CountAvailable(SkillTypeForPlayer2Available) >= 2) {
-      SkillTypeForPlayer2Available[0] = false;
-      serveAvailablePlayer20Btn.classList.remove('selected');
-    }
-    else if (SkillTypeForPlayer2Available[0] === false) {
-      SkillTypeForPlayer2Available[0] = true;
-      serveAvailablePlayer20Btn.classList.add('selected');
-    }
-  });
-  serveAvailablePlayer21Btn.addEventListener('click', () => {
-    if (SkillTypeForPlayer2Available[1] === true && CountAvailable(SkillTypeForPlayer2Available) >= 2) {
-      SkillTypeForPlayer2Available[1] = false;
-      serveAvailablePlayer21Btn.classList.remove('selected');
-    }
-    else if (SkillTypeForPlayer2Available[1] === false) {
-      SkillTypeForPlayer2Available[1] = true;
-      serveAvailablePlayer21Btn.classList.add('selected');
-    }
-  });
-  serveAvailablePlayer22Btn.addEventListener('click', () => {
-    if (SkillTypeForPlayer2Available[2] === true && CountAvailable(SkillTypeForPlayer2Available) >= 2) {
-      SkillTypeForPlayer2Available[2] = false;
-      serveAvailablePlayer22Btn.classList.remove('selected');
-    }
-    else if (SkillTypeForPlayer2Available[2] === false) {
-      SkillTypeForPlayer2Available[2] = true;
-      serveAvailablePlayer22Btn.classList.add('selected');
-    }
-  });
-  serveAvailablePlayer23Btn.addEventListener('click', () => {
-    if (SkillTypeForPlayer2Available[3] === true && CountAvailable(SkillTypeForPlayer2Available) >= 2) {
-      SkillTypeForPlayer2Available[3] = false;
-      serveAvailablePlayer23Btn.classList.remove('selected');
-    }
-    else if (SkillTypeForPlayer2Available[3] === false) {
-      SkillTypeForPlayer2Available[3] = true;
-      serveAvailablePlayer23Btn.classList.add('selected');
-    }
-  });
-  serveAvailablePlayer24Btn.addEventListener('click', () => {
-    if (SkillTypeForPlayer2Available[4] === true && CountAvailable(SkillTypeForPlayer2Available) >= 2) {
-      SkillTypeForPlayer2Available[4] = false;
-      serveAvailablePlayer24Btn.classList.remove('selected');
-    }
-    else if (SkillTypeForPlayer2Available[4] === false) {
-      SkillTypeForPlayer2Available[4] = true;
-      serveAvailablePlayer24Btn.classList.add('selected');
-    }
-  });
-  serveAvailablePlayer25Btn.addEventListener('click', () => {
-    if (SkillTypeForPlayer2Available[5] === true && CountAvailable(SkillTypeForPlayer2Available) >= 2) {
-      SkillTypeForPlayer2Available[5] = false;
-      serveAvailablePlayer25Btn.classList.remove('selected');
-    }
-    else if (SkillTypeForPlayer2Available[5] === false) {
-      SkillTypeForPlayer2Available[5] = true;
-      serveAvailablePlayer25Btn.classList.add('selected');
-    }
-  });
   const aboutBox = document.getElementById('about-box');
   const closeAboutBtn = document.getElementById('close-about-btn');
   aboutBtn.addEventListener('click', () => {
@@ -909,16 +744,6 @@ function setUpToShowDropdownsAndSubmenus(pikaVolley) {
       showSubmenu('serve-mode-submenu-btn', 'serve-mode-submenu');
     });
   */
-  document
-    .getElementById('serve-available-player1-submenu-btn')
-    .addEventListener('mouseover', () => {
-      showSubmenu('serve-available-player1-submenu-btn', 'serve-available-player1-submenu');
-    });
-  document
-    .getElementById('serve-available-player2-submenu-btn')
-    .addEventListener('mouseover', () => {
-      showSubmenu('serve-available-player2-submenu-btn', 'serve-available-player2-submenu');
-    });
   // set up to show submenus on click event
   // (it is for touch device equipped with physical keyboard)
   document.getElementById('bgm-submenu-btn').addEventListener('click', () => {
@@ -947,16 +772,6 @@ function setUpToShowDropdownsAndSubmenus(pikaVolley) {
       showSubmenu('serve-mode-submenu-btn', 'serve-mode-submenu');
     });
   */
-  document
-    .getElementById('serve-available-player1-submenu-btn')
-    .addEventListener('click', () => {
-      showSubmenu('serve-available-player1-submenu-btn', 'serve-available-player1-submenu');
-    });
-  document
-    .getElementById('serve-available-player2-submenu-btn')
-    .addEventListener('click', () => {
-      showSubmenu('serve-available-player2-submenu-btn', 'serve-available-player2-submenu');
-    });
 }
 
 /**
