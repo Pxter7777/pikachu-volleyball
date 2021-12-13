@@ -219,6 +219,7 @@ class Player {
     /*thunder ball phase*/
     this.skillPhase = 0;
     this.skillSubPhase = 0;
+    /* 
     if (this.isComputer === true) {
       if (this.isPlayer2 === false)
         this.fullSkillMethod = ChooseSkillTypeForPlayer1();
@@ -227,12 +228,13 @@ class Player {
       //console.log(lastSkill, this.fullSkillMethod);
       lastSkill = this.fullSkillMethod;
     }
-
+    */
     //this.fullSkillMethod = fullSkillTypeForPlayer2.tossAndFlat;
     this.usingSkill = SkillType.none;
     this.serveFixedOrder = true;
     if (this.isComputer === true) {
       this.serve.chooseNextSkill();
+      this.fullSkillMethod = this.serve.usingFullSkill;
       console.log("new skill choose", this.serve.usingFullSkill, this.serve.skillList);
     }
 
@@ -1059,15 +1061,19 @@ function expectedLandingPointXWhenPowerHit(
     copyBall.yVelocity += 1;
   }
 }
-
+const serveModeT = {
+  randomOrder: 0,
+  fixedOrder: 1,
+  completeRandom: 2,
+};
 class ServingMaching {
   constructor(isPlayer2) {
     this.isPlayer2 = isPlayer2;
 
     if (isPlayer2 === false)
-      this.skillCount = 6;
-    else if (isPlayer2 === true)
       this.skillCount = 9;
+    else if (isPlayer2 === true)
+      this.skillCount = 6;
     this.randServeIndex = this.skillCount - 1;
     this.skillList = [...Array(this.skillCount).keys()];
     this.usingFullSkill = -1;
@@ -1081,24 +1087,23 @@ class ServingMaching {
       this.skillList[randomIndex] = this.skillList[i];
       this.skillList[i] = temp;
     }
+    this.randServeIndex = 0;
   }
   chooseNextSkill() {
-    if (serveMode === 0)
+    if (serveMode === serveModeT.randomOrder)
       while (1) {
         // get next
         this.usingFullSkill = this.skillList[this.randServeIndex];
         this.randServeIndex++;
-        if (this.randServeIndex === this.skillCount) {
-          this.randServeIndex = 0;
+        if (this.randServeIndex === this.skillCount)
           this.shuffle();
-        }
         // check if it's available
         if (this.isPlayer2 === false && SkillTypeForPlayer1Available[this.usingFullSkill] === true)
           return;
         else if (this.isPlayer2 === true && SkillTypeForPlayer2Available[this.usingFullSkill] === true)
           return;
       }
-    else if (serveMode === 1)
+    else if (serveMode === serveModeT.fixedOrder)
       while (1) {
         // get next
         this.usingFullSkill++;
@@ -1151,10 +1156,11 @@ const fullSkillTypeForPlayer2 = {
   fakeNetThunderFlat: 5,
 };
 //var SkillTypeForPlayer2Available = [true, true, false, false, false, true];
-var lastSkill = -1;
+//var lastSkill = -1;
 function CountAvailable(avail) {
   return avail.filter(x => x === true).length;
 }
+/*  decide not to use this function
 function ChooseSkillTypeForPlayer1() {
   //console.log("avail=", CountAvailable(SkillTypeForPlayer1Available));
   if (serveMode == 0) {
@@ -1193,6 +1199,7 @@ function ChooseSkillTypeForPlayer2() {
     }
   }
 }
+*/
 var serveCount = 0;
 function Player1Serve(
   player,
