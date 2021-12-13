@@ -63,7 +63,8 @@ a:active {
   justify-content: center;
   align-items: stretch;
   width: var(--canvas-width);
-  height: 100vh;
+  /*height: 100vh;*/
+  height: 110vh;
   margin-left: auto;
   margin-right: auto;
 }
@@ -114,6 +115,9 @@ a:active {
 }
 #game-dropdown-btn {
   margin-left: 0;
+}
+#serve-mode-dropdown-btn {
+  width: var(--btn-width);
 }
 #about-btn {
   margin-right: 0;
@@ -335,6 +339,12 @@ div.limit-width {
   max-width: 864px;
   margin-left: auto;
   margin-right: auto;
+}
+div.show-checkboxes-container {
+  font-size: calc(var(--font-size) / 1.2);
+}
+div.margin-top-little {
+  margin-top: calc(var(--font-size) / 1.5);
 }
 #update-history-container h1 {
   font-size: calc(1.5 * var(--font-size));
