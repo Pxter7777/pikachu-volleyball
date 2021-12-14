@@ -130,7 +130,7 @@ class Player {
    */
   constructor(isPlayer2, isComputer) {
 
-    this.serve = new serveMaching(isPlayer2);
+    this.serve = new ServeMachine(isPlayer2);
 
     /** @type {boolean} Is this player on the right side? */
     this.isPlayer2 = isPlayer2; // 0xA0
@@ -232,8 +232,9 @@ class Player {
     //this.fullSkillMethod = fullSkillTypeForPlayer2.tossAndFlat;
     this.usingSkill = SkillType.none;
     this.serveFixedOrder = true;
+    this.serve.initializeForNewRound();
     if (this.isComputer === true) {
-      this.serve.chooseNextSkill();
+
       this.fullSkillMethod = this.serve.usingFullSkill;
       console.log("new skill choose", this.serve.usingFullSkill, this.serve.skillList);
     }
@@ -832,6 +833,7 @@ function letComputerDecideUserInput(player, ball, theOtherPlayer, userInput) {
   userInput.xDirection = 0;
   userInput.yDirection = 0;
   userInput.powerHit = 0;
+  return player.serve.executeMove(player, ball, theOtherPlayer, userInput);
   if (player.isPlayer2 === false)
     return Player1Serve(player, ball, theOtherPlayer, userInput);
   else if (player.isPlayer2 === true)
@@ -1066,7 +1068,163 @@ const serveModeT = {
   fixedOrder: 1,
   completeRandom: 2,
 };
-class serveMaching {
+const actionType = {
+  wait: 0,
+  forward: 1,
+  forwardUp: 2,
+  up: 3,
+  backwardUp: 4,
+  backward: 5,
+  backwardDown: 6,
+  down: 7,
+  forwardDown: 8,
+  forwardSmash: 9,
+  forwardUpSmash: 10,
+  upSmash: 11,
+  backwardUpSmash: 12,
+  backwardSmash: 13,
+  backwardDownSmash: 14,
+  downSmash: 15,
+  forwardDownSmash: 16,
+};
+const fullSkillTypeForPlayer1 = {
+  breakNet: 0,
+  tossAndFlat: 1,
+  headThunder: 2,
+  fakeHeadThunderFlat: 3,
+  netVSmash: 4,
+  netRSmash: 5,
+  netGSmash: 6,
+  netRGSmash: 7,
+  netDodge: 8,
+};
+const fullSkillTypeForPlayer2 = {
+  breakNet: 0,
+  tossAndFlat: 1,
+  headThunder: 2,
+  fakeHeadThunderFlat: 3,
+  netThunder: 4,
+  fakeNetThunderFlat: 5,
+};
+const player1Formula = [
+  [ //0. Break net
+    { action: actionType.forward, frames: 1 },
+    { action: actionType.wait, frames: 20 },
+    { action: actionType.forward, frames: 26 },
+    { action: actionType.forwardUp, frames: 4 },
+    { action: actionType.forwardDownSmash, frames: 1 }
+  ],
+  [ //1. Break net(fake, flat)
+    { action: actionType.forward, frames: 1 },
+    { action: actionType.wait, frames: 20 },
+    { action: actionType.forward, frames: 30 },
+    { action: actionType.forwardUp, frames: 1 },
+    { action: actionType.forwardSmash, frames: 2 }
+  ],
+  [ //2. Head thunder
+    { action: actionType.forward, frames: 1 },
+    { action: actionType.wait, frames: 20 },
+    { action: actionType.forward, frames: 11 },
+    { action: actionType.forwardUp, frames: 15 },
+    { action: actionType.downSmash, frames: 1 },
+    { action: actionType.forwardDownSmash, frames: 4 }
+  ],
+  [ //3. Head thunder(fake, flat)
+    { action: actionType.forward, frames: 1 },
+    { action: actionType.wait, frames: 20 },
+    { action: actionType.forward, frames: 11 },
+    { action: actionType.forwardUp, frames: 15 },
+    { action: actionType.forwardSmash, frames: 1 },
+  ],
+  [ //4. Net V smash
+    { action: actionType.forward, frames: 1 },
+    { action: actionType.wait, frames: 20 },
+    { action: actionType.forward, frames: 31 },
+    { action: actionType.forwardUpSmash, frames: 3 },
+    { action: actionType.wait, frames: 16 },
+    { action: actionType.downSmash, frames: 1 }
+  ],
+  [ //5. Net R smash
+    { action: actionType.forward, frames: 1 },
+    { action: actionType.wait, frames: 20 },
+    { action: actionType.forward, frames: 31 },
+    { action: actionType.forwardUpSmash, frames: 3 },
+    { action: actionType.wait, frames: 16 },
+    { action: actionType.upSmash, frames: 1 }
+  ],
+  [ //6. Net G smash
+    { action: actionType.forward, frames: 1 },
+    { action: actionType.wait, frames: 20 },
+    { action: actionType.forward, frames: 31 },
+    { action: actionType.forwardUpSmash, frames: 3 },
+    { action: actionType.wait, frames: 16 },
+    { action: actionType.forwardSmash, frames: 1 }
+  ],
+  [ //7. Net RG smash
+    { action: actionType.forward, frames: 1 },
+    { action: actionType.wait, frames: 20 },
+    { action: actionType.forward, frames: 31 },
+    { action: actionType.forwardUpSmash, frames: 3 },
+    { action: actionType.wait, frames: 16 },
+    { action: actionType.forwardUpSmash, frames: 1 }
+  ],
+  [ //8. Net dodge
+    { action: actionType.forward, frames: 1 },
+    { action: actionType.wait, frames: 20 },
+    { action: actionType.forward, frames: 31 },
+    { action: actionType.forwardUpSmash, frames: 3 },
+    { action: actionType.wait, frames: 16 },
+    { action: actionType.backward, frames: 1 }
+  ]
+]
+const player2Formula = [
+  [ //0. Break net
+    { action: actionType.forward, frames: 1 },
+    { action: actionType.wait, frames: 20 },
+    { action: actionType.forward, frames: 26 },
+    { action: actionType.forwardUp, frames: 4 },
+    { action: actionType.forwardDownSmash, frames: 1 }
+  ],
+  [ //1. Break net(fake, flat)
+    { action: actionType.forward, frames: 1 },
+    { action: actionType.wait, frames: 20 },
+    { action: actionType.forward, frames: 30 },
+    { action: actionType.forwardUp, frames: 1 },
+    { action: actionType.forwardSmash, frames: 2 }
+  ],
+  [ //2. Head thunder
+    { action: actionType.forward, frames: 1 },
+    { action: actionType.wait, frames: 20 },
+    { action: actionType.forward, frames: 11 },
+    { action: actionType.forwardUp, frames: 15 },
+    { action: actionType.downSmash, frames: 1 },
+    { action: actionType.forwardDownSmash, frames: 4 }
+  ],
+  [ //3. Head thunder(fake, flat)
+    { action: actionType.forward, frames: 1 },
+    { action: actionType.wait, frames: 20 },
+    { action: actionType.forward, frames: 11 },
+    { action: actionType.forwardUp, frames: 15 },
+    { action: actionType.forwardSmash, frames: 1 },
+  ],
+  [ //4. Net thunder
+    { action: actionType.forward, frames: 1 },
+    { action: actionType.wait, frames: 20 },
+    { action: actionType.forward, frames: 31 },
+    { action: actionType.forwardUpSmash, frames: 3 },
+    { action: actionType.wait, frames: 16 },
+    { action: actionType.downSmash, frames: 5 }
+  ],
+  [ //5. Net thunder(fake, flat)
+    { action: actionType.forward, frames: 1 },
+    { action: actionType.wait, frames: 20 },
+    { action: actionType.forward, frames: 31 },
+    { action: actionType.forwardUpSmash, frames: 3 },
+    { action: actionType.wait, frames: 16 },
+    { action: actionType.forwardSmash, frames: 1 }
+  ]
+]
+class ServeMachine {
   constructor(isPlayer2) {
     this.isPlayer2 = isPlayer2;
 
@@ -1116,6 +1274,86 @@ class serveMaching {
           return;
       }
   }
+  initializeForNewRound() {
+    this.chooseNextSkill();
+    this.framesLeft = 0;
+    this.phase = 0;
+  };
+  executeMove(
+    player,
+    ball,
+    theOtherPlayer,
+    userInput) {
+    //move
+    this.getNextAction();
+    if (this.action === actionType.forward)
+      userInput.xDirection = 1;
+    else if (this.action === actionType.forwardUp) {
+      userInput.xDirection = 1;
+      userInput.yDirection = -1;
+    }
+    else if (this.action === actionType.forwardDownSmash) {
+      userInput.xDirection = 1;
+      userInput.yDirection = 1;
+      userInput.powerHit = 1;
+    }
+    else if (this.action === actionType.forwardSmash) {
+      userInput.xDirection = 1;
+      userInput.powerHit = 1;
+    }
+    else if (this.action === actionType.downSmash) {
+      userInput.yDirection = 1;
+      userInput.powerHit = 1;
+    }
+    else if (this.action === actionType.upSmash) {
+      userInput.yDirection = -1;
+      userInput.powerHit = 1;
+    }
+    else if (this.action === actionType.forwardUpSmash) {
+      userInput.xDirection = 1;
+      userInput.yDirection = -1;
+      userInput.powerHit = 1;
+    }
+    else if (this.action === actionType.backward) {
+      userInput.xDirection = -1;
+    }
+    console.log(this.action);
+    if (this.isPlayer2 === true) {
+      userInput.xDirection = -userInput.xDirection;
+    }
+    return;
+  }
+  getNextAction() {
+
+    if (this.framesLeft === 0) {
+      if (serveMode === 0 || serveMode === 1) {
+        //check formula
+        if (this.isPlayer2 === false) {
+          if (this.phase < player1Formula[this.usingFullSkill].length) {
+            this.action = player1Formula[this.usingFullSkill][this.phase].action;
+            this.framesLeft = player1Formula[this.usingFullSkill][this.phase].frames;
+          }
+          else
+            this.action = actionType.wait;
+        }
+        else if (this.isPlayer2 === true) {
+          if (this.phase < player2Formula[this.usingFullSkill].length) {
+            this.action = player2Formula[this.usingFullSkill][this.phase].action;
+            this.framesLeft = player2Formula[this.usingFullSkill][this.phase].frames;
+          }
+          else
+            this.action = actionType.wait;
+        }
+        this.phase++;
+      }
+      else {
+        // other modes, not implemented yet
+        ;
+      }
+    }
+    this.framesLeft--;
+    return;
+  }
 
 };
 
@@ -1136,25 +1374,7 @@ const SkillType = {
   netRGSmash: 13,
   netDodge: 14,
 };
-const fullSkillTypeForPlayer1 = {
-  breakNet: 0,
-  tossAndFlat: 1,
-  headThunder: 2,
-  fakeHeadThunderFlat: 3,
-  netVSmash: 4,
-  netRSmash: 5,
-  netGSmash: 6,
-  netRGSmash: 7,
-  netDodge: 8,
-};
-const fullSkillTypeForPlayer2 = {
-  breakNet: 0,
-  tossAndFlat: 1,
-  headThunder: 2,
-  fakeHeadThunderFlat: 3,
-  netThunder: 4,
-  fakeNetThunderFlat: 5,
-};
+
 //var SkillTypeForPlayer2Available = [true, true, false, false, false, true];
 //var lastSkill = -1;
 function CountAvailable(avail) {
