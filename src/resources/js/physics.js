@@ -1202,55 +1202,56 @@ console.log("global walk");
 class ServeMachine {
   constructor(isPlayer2) {
     this.isPlayer2 = isPlayer2;
-
     if (isPlayer2 === false)
       this.skillCount = 10;
     else if (isPlayer2 === true)
       this.skillCount = 8;
     this.randServeIndex = this.skillCount - 1;
     this.skillList = [...Array(this.skillCount).keys()];
-    this.usingFullSkill = -1;
+    this.usingSkill = -1;
     //console.log(this.skillList);
   }
-  shuffle() {
+  shuffle() {// pure function
+    let newlist = this.skillList.slice();
     for (let i = this.skillCount - 1; i >= 0; i--) {
-      var randomIndex = Math.floor(Math.random() * (i + 1));
+      let randomIndex = Math.floor(Math.random() * (i + 1));
       // swap
-      let temp = this.skillList[randomIndex];
-      this.skillList[randomIndex] = this.skillList[i];
-      this.skillList[i] = temp;
+      let temp = newlist[randomIndex];
+      newlist[randomIndex] = newlist[i];
+      newlist[i] = temp;
     }
-    this.randServeIndex = 0;
+    return { newlist, newRandServeIndex: 0 };
   }
   chooseNextSkill() {
     if (serveMode === serveModeT.randomOrder)
       while (1) {
         // get next
-        this.usingFullSkill = this.skillList[this.randServeIndex];
+        this.usingSkill = this.skillList[this.randServeIndex];
         this.randServeIndex++;
         if (this.randServeIndex === this.skillCount)
-          this.shuffle();
+          ({ newlist: this.skillList, newRandServeIndex: this.randServeIndex } = this.shuffle());
         // check if it's available
-        if (this.isPlayer2 === false && SkillTypeForPlayer1Available[this.usingFullSkill] === true)
+        if (this.isPlayer2 === false && SkillTypeForPlayer1Available[this.usingSkill] === true)
           return;
-        else if (this.isPlayer2 === true && SkillTypeForPlayer2Available[this.usingFullSkill] === true)
+        else if (this.isPlayer2 === true && SkillTypeForPlayer2Available[this.usingSkill] === true)
           return;
       }
     else if (serveMode === serveModeT.fixedOrder)
       while (1) {
         // get next
-        this.usingFullSkill++;
-        if (this.usingFullSkill === this.skillCount)
-          this.usingFullSkill = 0;
+        this.usingSkill++;
+        if (this.usingSkill === this.skillCount)
+          this.usingSkill = 0;
         // check if it's available
-        if (this.isPlayer2 === false && SkillTypeForPlayer1Available[this.usingFullSkill] === true)
+        if (this.isPlayer2 === false && SkillTypeForPlayer1Available[this.usingSkill] === true)
           return;
-        else if (this.isPlayer2 === true && SkillTypeForPlayer2Available[this.usingFullSkill] === true)
+        else if (this.isPlayer2 === true && SkillTypeForPlayer2Available[this.usingSkill] === true)
           return;
       }
   }
   initializeForNewRound() {
     this.chooseNextSkill();
+    console.log(this.usingSkill, this.skillList);
     this.framesLeft = 0;
     this.phase = 0;
   };
@@ -1303,9 +1304,9 @@ class ServeMachine {
     if (this.framesLeft === 0) {
       //check formula
       if (this.isPlayer2 === false) {
-        if (this.phase < player1Formula[this.usingFullSkill].length) {
-          this.action = player1Formula[this.usingFullSkill][this.phase].action;
-          this.framesLeft = player1Formula[this.usingFullSkill][this.phase].frames;
+        if (this.phase < player1Formula[this.usingSkill].length) {
+          this.action = player1Formula[this.usingSkill][this.phase].action;
+          this.framesLeft = player1Formula[this.usingSkill][this.phase].frames;
         }
         else {
           // don't move
@@ -1315,9 +1316,9 @@ class ServeMachine {
 
       }
       else if (this.isPlayer2 === true) {
-        if (this.phase < player2Formula[this.usingFullSkill].length) {
-          this.action = player2Formula[this.usingFullSkill][this.phase].action;
-          this.framesLeft = player2Formula[this.usingFullSkill][this.phase].frames;
+        if (this.phase < player2Formula[this.usingSkill].length) {
+          this.action = player2Formula[this.usingSkill][this.phase].action;
+          this.framesLeft = player2Formula[this.usingSkill][this.phase].frames;
         }
         else {
           // don't move
