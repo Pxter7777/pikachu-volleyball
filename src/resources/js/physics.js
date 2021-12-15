@@ -216,18 +216,6 @@ class Player {
      * @type {number} 0, 1, 2, 3 or 4
      */
     this.computerBoldness = rand() % 5; // 0xD8  // initialized to (_rand() % 5)
-    /*thunder ball phase*/
-    /* 
-    if (this.isComputer === true) {
-      if (this.isPlayer2 === false)
-        this.fullSkillMethod = ChooseSkillTypeForPlayer1();
-      else if (this.isPlayer2 === true)
-        this.fullSkillMethod = ChooseSkillTypeForPlayer2();
-      //console.log(lastSkill, this.fullSkillMethod);
-      lastSkill = this.fullSkillMethod;
-    }
-    */
-    //this.fullSkillMethod = fullSkillTypeForPlayer2.tossAndFlat;
     this.serve.initializeForNewRound();
 
 
@@ -1198,7 +1186,6 @@ const player2Formula = [
     { action: actionType.forwardSmash, frames: 1 },
   ],
 ]
-console.log("global walk");
 class ServeMachine {
   constructor(isPlayer2) {
     this.isPlayer2 = isPlayer2;
@@ -1209,7 +1196,6 @@ class ServeMachine {
     this.randServeIndex = this.skillCount - 1;
     this.skillList = [...Array(this.skillCount).keys()];
     this.usingSkill = -1;
-    //console.log(this.skillList);
   }
   shuffle() {// pure function
     let newlist = this.skillList.slice();
@@ -1251,9 +1237,9 @@ class ServeMachine {
   }
   initializeForNewRound() {
     this.chooseNextSkill();
-    console.log(this.usingSkill, this.skillList);
-    this.framesLeft = 0;
     this.phase = 0;
+    this.action = 0;
+    this.framesLeft = 0;
   };
   executeMove(
     player,
@@ -1261,8 +1247,8 @@ class ServeMachine {
     theOtherPlayer,
     userInput) {
     //move
-    this.getNextAction();
-    this.framesLeft--;
+    ({ newPhase: this.phase, newAction: this.action, newFramesLeft: this.framesLeft } = this.getNextAction());
+
     if (this.action === actionType.forward)
       userInput.xDirection = 1;
     else if (this.action === actionType.forwardUp) {
@@ -1294,42 +1280,41 @@ class ServeMachine {
     else if (this.action === actionType.backward) {
       userInput.xDirection = -1;
     }
-    //console.log(this.action);
     if (this.isPlayer2 === true) {
       userInput.xDirection = -userInput.xDirection;
     }
     return;
   }
-  getNextAction() {
+  getNextAction() {// pure function
+    let newPhase = this.phase, newAction = this.action, newFramesLeft = this.framesLeft;
     if (this.framesLeft === 0) {
       //check formula
       if (this.isPlayer2 === false) {
         if (this.phase < player1Formula[this.usingSkill].length) {
-          this.action = player1Formula[this.usingSkill][this.phase].action;
-          this.framesLeft = player1Formula[this.usingSkill][this.phase].frames;
+          newAction = player1Formula[this.usingSkill][this.phase].action;
+          newFramesLeft = player1Formula[this.usingSkill][this.phase].frames;
         }
         else {
           // don't move
-          this.action = actionType.wait;
-          this.framesLeft = -1000;
+          newAction = actionType.wait;
+          newFramesLeft = -1000;
         }
 
       }
       else if (this.isPlayer2 === true) {
         if (this.phase < player2Formula[this.usingSkill].length) {
-          this.action = player2Formula[this.usingSkill][this.phase].action;
-          this.framesLeft = player2Formula[this.usingSkill][this.phase].frames;
+          newAction = player2Formula[this.usingSkill][this.phase].action;
+          newFramesLeft = player2Formula[this.usingSkill][this.phase].frames;
         }
         else {
           // don't move
-          this.action = actionType.wait;
-          this.framesLeft = -1000;
+          newAction = actionType.wait;
+          newFramesLeft = -1000;
         }
       }
-      this.phase++;
+      newPhase = this.phase + 1;
     }
-
-    if (this.framesLeft === 0) {
+    if (newFramesLeft === 0) {
       // if still equal to zero, means checkpoint occur,
       if (serveMode === 0 || serveMode === 1) {
         // just skip to the next action
@@ -1341,6 +1326,7 @@ class ServeMachine {
         this.getNextAction();
       }
     }
+    return { newPhase, newAction, newFramesLeft: newFramesLeft - 1 };
   }
 
 };
