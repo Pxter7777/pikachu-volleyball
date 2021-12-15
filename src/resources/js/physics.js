@@ -1086,8 +1086,9 @@ const fullSkillTypeForPlayer1 = {
   netVSmash: 4,
   netRSmash: 5,
   netGSmash: 6,
-  netRGSmash: 7,
-  netDodge: 8,
+  netDodge: 7,
+  tailThunder: 8,
+  fakeTailThunderFlat: 9,
 };
 const fullSkillTypeForPlayer2 = {
   breakNet: 0,
@@ -1151,21 +1152,27 @@ const player1Formula = [
     { action: actionType.wait, frames: 16 },
     { action: actionType.forwardSmash, frames: 1 }
   ],
-  [ //7. Net RG smash
-    { action: actionType.forward, frames: 1 },
-    { action: actionType.wait, frames: 20 },
-    { action: actionType.forward, frames: 31 },
-    { action: actionType.forwardUpSmash, frames: 3 },
-    { action: actionType.wait, frames: 16 },
-    { action: actionType.forwardUpSmash, frames: 1 }
-  ],
-  [ //8. Net dodge
+  [ //7. Net dodge
     { action: actionType.forward, frames: 1 },
     { action: actionType.wait, frames: 20 },
     { action: actionType.forward, frames: 31 },
     { action: actionType.forwardUpSmash, frames: 3 },
     { action: actionType.wait, frames: 16 },
     { action: actionType.backward, frames: 1 }
+  ],
+  [ //8. Tail thunder
+    { action: actionType.forward, frames: 7 },
+    { action: actionType.wait, frames: 14 },
+    { action: actionType.forward, frames: 11 },
+    { action: actionType.forwardUp, frames: 15 },
+    { action: actionType.downSmash, frames: 5 },
+  ],
+  [ //9. Tail thunder(fake, flat)
+    { action: actionType.forward, frames: 7 },
+    { action: actionType.wait, frames: 14 },
+    { action: actionType.forward, frames: 11 },
+    { action: actionType.forwardUp, frames: 15 },
+    { action: actionType.forwardSmash, frames: 1 },
   ]
 ]
 const player2Formula = [
@@ -1174,7 +1181,22 @@ const player2Formula = [
   player1Formula[2].slice(), //2. Head thunder
   player1Formula[3].slice(), //3. Head thunder(fake, flat)
   player1Formula[4].slice(), //4. Net thunder
-  player1Formula[6].slice()  //5. Net thunder(fake, flat)
+  player1Formula[6].slice(), //5. Net thunder(fake, flat)
+  [ //6. Tail thunder
+    { action: actionType.forward, frames: 7 },
+    { action: actionType.wait, frames: 14 },
+    { action: actionType.forward, frames: 11 },
+    { action: actionType.forwardUp, frames: 2 },
+    { action: actionType.wait, frames: 13 },
+    { action: actionType.forwardDownSmash, frames: 5 },
+  ], [ //7. Tail thunder(fake, flat)
+    { action: actionType.forward, frames: 7 },
+    { action: actionType.wait, frames: 14 },
+    { action: actionType.forward, frames: 11 },
+    { action: actionType.forwardUp, frames: 2 },
+    { action: actionType.wait, frames: 13 },
+    { action: actionType.forwardSmash, frames: 1 },
+  ],
 ]
 console.log("global walk");
 class ServeMachine {
@@ -1182,9 +1204,9 @@ class ServeMachine {
     this.isPlayer2 = isPlayer2;
 
     if (isPlayer2 === false)
-      this.skillCount = 9;
+      this.skillCount = 10;
     else if (isPlayer2 === true)
-      this.skillCount = 6;
+      this.skillCount = 8;
     this.randServeIndex = this.skillCount - 1;
     this.skillList = [...Array(this.skillCount).keys()];
     this.usingFullSkill = -1;

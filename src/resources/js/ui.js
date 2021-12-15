@@ -8,8 +8,8 @@ import { LineStyle } from 'pixi.js-legacy';
 /** @typedef {import('./pikavolley.js').PikachuVolleyball} PikachuVolleyball */
 /** @typedef {import('pixi.js-legacy').Ticker} Ticker */
 export var serveMode = 0;
-export var SkillTypeForPlayer1Available = [true, true, true, true, true, true, true, true, true];
-export var SkillTypeForPlayer2Available = [true, true, true, true, true, true];
+export var SkillTypeForPlayer1Available = [true, true, true, true, true, true, true, true, true, true];
+export var SkillTypeForPlayer2Available = [true, true, true, true, true, true, true, true];
 /**
  * Enum for "game paused by what?".
  * The greater the number, the higher the precedence.
@@ -431,12 +431,15 @@ function setUpBtns(pikaVolley, ticker) {
   const player1Skill6Checkbox = document.getElementById('player-1-skill-6-checkbox');
   const player1Skill7Checkbox = document.getElementById('player-1-skill-7-checkbox');
   const player1Skill8Checkbox = document.getElementById('player-1-skill-8-checkbox');
+  const player1Skill9Checkbox = document.getElementById('player-1-skill-9-checkbox');
   const player2Skill0Checkbox = document.getElementById('player-2-skill-0-checkbox');
   const player2Skill1Checkbox = document.getElementById('player-2-skill-1-checkbox');
   const player2Skill2Checkbox = document.getElementById('player-2-skill-2-checkbox');
   const player2Skill3Checkbox = document.getElementById('player-2-skill-3-checkbox');
   const player2Skill4Checkbox = document.getElementById('player-2-skill-4-checkbox');
   const player2Skill5Checkbox = document.getElementById('player-2-skill-5-checkbox');
+  const player2Skill6Checkbox = document.getElementById('player-2-skill-6-checkbox');
+  const player2Skill7Checkbox = document.getElementById('player-2-skill-7-checkbox');
   // @ts-ignore
   player1Skill0Checkbox.checked = true;
   // @ts-ignore
@@ -456,6 +459,8 @@ function setUpBtns(pikaVolley, ticker) {
   // @ts-ignore
   player1Skill8Checkbox.checked = true;
   // @ts-ignore
+  player1Skill9Checkbox.checked = true;
+  // @ts-ignore
   player2Skill0Checkbox.checked = true;
   // @ts-ignore
   player2Skill1Checkbox.checked = true;
@@ -467,6 +472,10 @@ function setUpBtns(pikaVolley, ticker) {
   player2Skill4Checkbox.checked = true;
   // @ts-ignore
   player2Skill5Checkbox.checked = true;
+  // @ts-ignore
+  player2Skill6Checkbox.checked = true;
+  // @ts-ignore
+  player2Skill7Checkbox.checked = true;
   player1Skill0Checkbox.addEventListener('change', () => {
     // @ts-ignore
     if (player1Skill0Checkbox.checked === true)
@@ -575,6 +584,18 @@ function setUpBtns(pikaVolley, ticker) {
         player1Skill8Checkbox.checked = true;
     }
   });
+  player1Skill9Checkbox.addEventListener('change', () => {
+    // @ts-ignore
+    if (player1Skill9Checkbox.checked === true)
+      SkillTypeForPlayer1Available[9] = true;
+    // @ts-ignore
+    else if (player1Skill9Checkbox.checked === false) {
+      if (CountAvailable(SkillTypeForPlayer1Available) >= 2)
+        SkillTypeForPlayer1Available[9] = false;
+      else// @ts-ignore
+        player1Skill9Checkbox.checked = true;
+    }
+  });
   player2Skill0Checkbox.addEventListener('change', () => {
     // @ts-ignore
     if (player2Skill0Checkbox.checked === true)
@@ -645,6 +666,30 @@ function setUpBtns(pikaVolley, ticker) {
         SkillTypeForPlayer2Available[5] = false;
       else// @ts-ignore
         player2Skill5Checkbox.checked = true;
+    }
+  });
+  player2Skill6Checkbox.addEventListener('change', () => {
+    // @ts-ignore
+    if (player2Skill6Checkbox.checked === true)
+      SkillTypeForPlayer2Available[6] = true;
+    // @ts-ignore
+    else if (player2Skill6Checkbox.checked === false) {
+      if (CountAvailable(SkillTypeForPlayer2Available) >= 2)
+        SkillTypeForPlayer2Available[6] = false;
+      else// @ts-ignore
+        player2Skill56heckbox.checked = true;
+    }
+  });
+  player2Skill7Checkbox.addEventListener('change', () => {
+    // @ts-ignore
+    if (player2Skill7Checkbox.checked === true)
+      SkillTypeForPlayer2Available[7] = true;
+    // @ts-ignore
+    else if (player2Skill7Checkbox.checked === false) {
+      if (CountAvailable(SkillTypeForPlayer2Available) >= 2)
+        SkillTypeForPlayer2Available[7] = false;
+      else// @ts-ignore
+        player2Skill57heckbox.checked = true;
     }
   });
   const aboutBox = document.getElementById('about-box');
