@@ -1133,7 +1133,7 @@ const player1Formula = [
     { action: actionType.forward, frames: 31 },
     { action: actionType.forwardUpSmash, frames: 3 },
     { action: actionType.wait, frames: 16 },
-    { action: actionType.downSmash, frames: 1 }
+    { action: actionType.downSmash, frames: 5 }
   ],
   [ //5. Net R smash
     { action: actionType.forward, frames: 1 },
@@ -1169,52 +1169,14 @@ const player1Formula = [
   ]
 ]
 const player2Formula = [
-  [ //0. Break net
-    { action: actionType.forward, frames: 1 },
-    { action: actionType.wait, frames: 20 },
-    { action: actionType.forward, frames: 26 },
-    { action: actionType.forwardUp, frames: 4 },
-    { action: actionType.forwardDownSmash, frames: 1 }
-  ],
-  [ //1. Break net(fake, flat)
-    { action: actionType.forward, frames: 1 },
-    { action: actionType.wait, frames: 20 },
-    { action: actionType.forward, frames: 30 },
-    { action: actionType.forwardUp, frames: 1 },
-    { action: actionType.forwardSmash, frames: 2 }
-  ],
-  [ //2. Head thunder
-    { action: actionType.forward, frames: 1 },
-    { action: actionType.wait, frames: 20 },
-    { action: actionType.forward, frames: 11 },
-    { action: actionType.forwardUp, frames: 15 },
-    { action: actionType.downSmash, frames: 1 },
-    { action: actionType.forwardDownSmash, frames: 4 }
-  ],
-  [ //3. Head thunder(fake, flat)
-    { action: actionType.forward, frames: 1 },
-    { action: actionType.wait, frames: 20 },
-    { action: actionType.forward, frames: 11 },
-    { action: actionType.forwardUp, frames: 15 },
-    { action: actionType.forwardSmash, frames: 1 },
-  ],
-  [ //4. Net thunder
-    { action: actionType.forward, frames: 1 },
-    { action: actionType.wait, frames: 20 },
-    { action: actionType.forward, frames: 31 },
-    { action: actionType.forwardUpSmash, frames: 3 },
-    { action: actionType.wait, frames: 16 },
-    { action: actionType.downSmash, frames: 5 }
-  ],
-  [ //5. Net thunder(fake, flat)
-    { action: actionType.forward, frames: 1 },
-    { action: actionType.wait, frames: 20 },
-    { action: actionType.forward, frames: 31 },
-    { action: actionType.forwardUpSmash, frames: 3 },
-    { action: actionType.wait, frames: 16 },
-    { action: actionType.forwardSmash, frames: 1 }
-  ]
+  player1Formula[0].slice(), //0. Break net
+  player1Formula[1].slice(), //1. Break net(fake, flat)
+  player1Formula[2].slice(), //2. Head thunder
+  player1Formula[3].slice(), //3. Head thunder(fake, flat)
+  player1Formula[4].slice(), //4. Net thunder
+  player1Formula[5].slice()  //5. Net thunder(fake, flat)
 ]
+console.log("global walk");
 class ServeMachine {
   constructor(isPlayer2) {
     this.isPlayer2 = isPlayer2;
