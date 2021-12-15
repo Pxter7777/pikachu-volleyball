@@ -1174,7 +1174,7 @@ const player2Formula = [
   player1Formula[2].slice(), //2. Head thunder
   player1Formula[3].slice(), //3. Head thunder(fake, flat)
   player1Formula[4].slice(), //4. Net thunder
-  player1Formula[5].slice()  //5. Net thunder(fake, flat)
+  player1Formula[6].slice()  //5. Net thunder(fake, flat)
 ]
 console.log("global walk");
 class ServeMachine {
@@ -1239,6 +1239,7 @@ class ServeMachine {
     userInput) {
     //move
     this.getNextAction();
+    this.framesLeft--;
     if (this.action === actionType.forward)
       userInput.xDirection = 1;
     else if (this.action === actionType.forwardUp) {
@@ -1277,35 +1278,46 @@ class ServeMachine {
     return;
   }
   getNextAction() {
+    if (this.framesLeft === 0) {
+      //check formula
+      if (this.isPlayer2 === false) {
+        if (this.phase < player1Formula[this.usingFullSkill].length) {
+          this.action = player1Formula[this.usingFullSkill][this.phase].action;
+          this.framesLeft = player1Formula[this.usingFullSkill][this.phase].frames;
+        }
+        else {
+          // don't move
+          this.action = actionType.wait;
+          this.framesLeft = -1000;
+        }
+
+      }
+      else if (this.isPlayer2 === true) {
+        if (this.phase < player2Formula[this.usingFullSkill].length) {
+          this.action = player2Formula[this.usingFullSkill][this.phase].action;
+          this.framesLeft = player2Formula[this.usingFullSkill][this.phase].frames;
+        }
+        else {
+          // don't move
+          this.action = actionType.wait;
+          this.framesLeft = -1000;
+        }
+      }
+      this.phase++;
+    }
 
     if (this.framesLeft === 0) {
+      // if still equal to zero, means checkpoint occur,
       if (serveMode === 0 || serveMode === 1) {
-        //check formula
-        if (this.isPlayer2 === false) {
-          if (this.phase < player1Formula[this.usingFullSkill].length) {
-            this.action = player1Formula[this.usingFullSkill][this.phase].action;
-            this.framesLeft = player1Formula[this.usingFullSkill][this.phase].frames;
-          }
-          else
-            this.action = actionType.wait;
-        }
-        else if (this.isPlayer2 === true) {
-          if (this.phase < player2Formula[this.usingFullSkill].length) {
-            this.action = player2Formula[this.usingFullSkill][this.phase].action;
-            this.framesLeft = player2Formula[this.usingFullSkill][this.phase].frames;
-          }
-          else
-            this.action = actionType.wait;
-        }
-        this.phase++;
+        // just skip to the next action
+        this.getNextAction();
       }
-      else {
-        // other modes, not implemented yet
-        ;
+      else if (serveMode === 2) {
+        // challenging mode
+        // wait to be implement
+        this.getNextAction();
       }
     }
-    this.framesLeft--;
-    return;
   }
 
 };
